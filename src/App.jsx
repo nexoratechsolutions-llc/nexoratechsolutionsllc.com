@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import CursorGlow from './components/CursorGlow'
 import ErrorBoundary from './components/ErrorBoundary'
+import PageLoader from './components/PageLoader'
 import Home from './pages/Home'
 import { useRevealObserver } from './hooks/useMotion'
 
@@ -42,14 +43,6 @@ function RouteChangeEffects() {
   return null
 }
 
-function RouteFallback() {
-  return (
-    <div style={{ minHeight: '60vh', display: 'grid', placeItems: 'center' }}>
-      <span className="spinner" style={{ width: 22, height: 22, color: 'var(--accent)' }} aria-label="Loading" />
-    </div>
-  )
-}
-
 export default function App() {
   const { pathname } = useLocation()
   useRevealObserver(pathname)
@@ -68,7 +61,7 @@ export default function App() {
 
       <main id="main" tabIndex={-1} className="page-enter" key={pathname}>
         <ErrorBoundary>
-          <Suspense fallback={<RouteFallback />}>
+          <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />

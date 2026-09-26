@@ -24,12 +24,120 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!--
+    media="print" keeps this off the critical path so it cannot block first
+    paint. theme-boot.js flips it to "all" once it has loaded. Without this, a
+    slow or blocked fonts.googleapis.com stops the whole page rendering.
+  -->
+  <link id="gfonts" media="print" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  </noscript>
 
   <title>Nexora TechSolutions</title>
   <script src="/theme-boot.js"></script>
+
+  <!--
+    Boot loader styles are inline on purpose: they must paint before the
+    bundled CSS arrives, otherwise there is a blank frame first. Colours are
+    literals for the same reason — tokens.css is not parsed yet. Keep them in
+    step with src/styles/tokens.css.
+  -->
+  <style>
+    :root{ --boot-bg:#141109; --boot-ink:#F3EEE1; --boot-faint:#7E7460; --boot-accent:#E39352; --boot-line:#332B1B; }
+    :root[data-theme="light"]{ --boot-bg:#F7F4EC; --boot-ink:#1B1912; --boot-faint:#948C79; --boot-accent:#B5602A; --boot-line:#E1D9C6; }
+    html{ background:var(--boot-bg); }
+    body{ margin:0; background:var(--boot-bg); }
+
+    #boot-loader{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px;
+      background:var(--boot-bg);
+      font-family:'Work Sans',-apple-system,'Segoe UI',sans-serif;
+      /* Fades in slightly late, so a fast load never flashes a loader. */
+      opacity:0; animation:bootIn .3s ease .18s forwards;
+    }
+    @keyframes bootIn{ to{ opacity:1; } }
+
+    #boot-loader.is-done{
+      opacity:0; visibility:hidden;
+      transition:opacity .45s ease, visibility 0s linear .45s;
+      animation:none;
+    }
+
+    .boot-mark{ width:60px; height:60px; display:block; }
+    .boot-ring{ transform-origin:15px 15px; animation:bootSpin 2.6s linear infinite; }
+    .boot-node{ transform-box:fill-box; transform-origin:center; animation:bootPulse 1.9s ease-in-out infinite; }
+    .boot-node.b{ animation-delay:.25s; }
+    .boot-node.c{ animation-delay:.5s; }
+    @keyframes bootSpin{ to{ transform:rotate(360deg); } }
+    @keyframes bootPulse{ 0%,100%{ opacity:.45; transform:scale(1); } 50%{ opacity:1; transform:scale(1.22); } }
+
+    .boot-word{
+      font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.2rem;
+      letter-spacing:.01em; color:var(--boot-ink);
+    }
+    .boot-word b{ color:var(--boot-accent); font-weight:600; }
+
+    .boot-bar{
+      width:132px; height:2px; border-radius:2px;
+      background:var(--boot-line); overflow:hidden; position:relative;
+    }
+    .boot-bar::after{
+      content:""; position:absolute; inset:0; width:40%;
+      background:var(--boot-accent); border-radius:2px;
+      animation:bootSlide 1.25s cubic-bezier(.65,0,.35,1) infinite;
+    }
+    @keyframes bootSlide{ 0%{ transform:translateX(-110%); } 100%{ transform:translateX(360%); } }
+
+    /* Pure CSS escape hatch: if the bundle never arrives, say so. No inline
+       script is possible here — the CSP forbids it. */
+    .boot-slow{
+      margin:0; max-width:34ch; text-align:center; font-size:.82rem; line-height:1.5;
+      color:var(--boot-faint); opacity:0; animation:bootIn .4s ease 9s forwards;
+    }
+    .boot-slow a{ color:var(--boot-accent); }
+
+    .boot-sr{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #boot-loader{ opacity:1; animation:none; }
+      .boot-ring,.boot-node,.boot-bar::after{ animation:none; }
+      .boot-bar::after{ width:100%; }
+      .boot-slow{ animation:none; opacity:1; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Removed by src/main.jsx once React has mounted. -->
+  <div id="boot-loader" role="status" aria-live="polite">
+    <span class="boot-sr">Loading Nexora TechSolutions…</span>
+
+    <svg class="boot-mark" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+      <g class="boot-ring">
+        <circle cx="15" cy="15" r="13.4" stroke="var(--boot-line)" stroke-width="1" stroke-dasharray="3 6" />
+      </g>
+      <line x1="9" y1="20" x2="15" y2="8" stroke="var(--boot-accent)" stroke-width="1.4" />
+      <line x1="15" y1="8" x2="21" y2="20" stroke="#74B39B" stroke-width="1.4" />
+      <line x1="9" y1="20" x2="21" y2="20" stroke="var(--boot-faint)" stroke-width="1.4" />
+      <circle class="boot-node a" cx="15" cy="8" r="3" fill="var(--boot-accent)" />
+      <circle class="boot-node b" cx="9" cy="20" r="3" fill="#74B39B" />
+      <circle class="boot-node c" cx="21" cy="20" r="3" fill="var(--boot-ink)" />
+    </svg>
+
+    <span class="boot-word" aria-hidden="true">Nex<b>ora</b></span>
+    <div class="boot-bar" aria-hidden="true"></div>
+
+    <p class="boot-slow">
+      This is taking longer than usual. If it does not load, email
+      <a href="mailto:minchu@nexoratechsolutionsllc.com">minchu@nexoratechsolutionsllc.com</a>
+      or call +1 (678) 925-8885.
+    </p>
+  </div>
+
   <div id="root"></div>
   <noscript>
     <div style="padding:40px;font-family:sans-serif;max-width:640px;margin:0 auto">

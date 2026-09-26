@@ -625,6 +625,40 @@
 }
 .social-row a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
 
+/* ===== Route loader ===== */
+.page-loader{
+  min-height:62vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+}
+.page-loader-mark{width:52px;height:52px;display:block;}
+.page-loader-bar{
+  width:120px;height:2px;border-radius:2px;
+  background:var(--line);overflow:hidden;position:relative;
+}
+.page-loader-bar::after{
+  content:"";position:absolute;inset:0;width:40%;
+  background:var(--accent);border-radius:2px;
+}
+.pl-ring{transform-origin:15px 15px;}
+.pl-node{transform-box:fill-box;transform-origin:center;}
+
+@media (prefers-reduced-motion: no-preference){
+  /* Appears only if the chunk is actually slow, so a fast route change does
+     not flash a loader. */
+  .page-loader{opacity:0;animation:plIn .3s ease .2s forwards;}
+  .pl-ring{animation:spin360 2.6s linear infinite;}
+  .pl-node{animation:plPulse 1.9s ease-in-out infinite;}
+  .pl-node.b{animation-delay:.25s;}
+  .pl-node.c{animation-delay:.5s;}
+  .page-loader-bar::after{animation:plSlide 1.25s cubic-bezier(.65,0,.35,1) infinite;}
+}
+@media (prefers-reduced-motion: reduce){
+  .page-loader-bar::after{width:100%;}
+}
+@keyframes plIn{to{opacity:1;}}
+@keyframes plPulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:1;transform:scale(1.22);}}
+@keyframes plSlide{0%{transform:translateX(-110%);}100%{transform:translateX(360%);}}
+
 /* ===== 404 ===== */
 .notfound{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;padding-block:80px;}
 .notfound .code{font-family:var(--font-mono);font-size:clamp(4rem,14vw,9rem);line-height:1;color:var(--accent);letter-spacing:-.04em;}
