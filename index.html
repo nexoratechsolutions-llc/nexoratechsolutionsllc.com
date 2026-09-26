@@ -44,57 +44,73 @@
     step with src/styles/tokens.css.
   -->
   <style>
-    :root{ --boot-bg:#141109; --boot-ink:#F3EEE1; --boot-faint:#7E7460; --boot-accent:#E39352; --boot-line:#332B1B; }
-    :root[data-theme="light"]{ --boot-bg:#F7F4EC; --boot-ink:#1B1912; --boot-faint:#948C79; --boot-accent:#B5602A; --boot-line:#E1D9C6; }
+    :root{
+      --boot-bg:#141109; --boot-ink:#F3EEE1; --boot-muted:#9C947F; --boot-faint:#7E7460;
+      --boot-accent:#E39352; --boot-green:#74B39B;
+      --boot-ring:rgba(255,255,255,.09); --boot-ring-2:rgba(255,255,255,.15);
+      --boot-track:rgba(255,255,255,.10);
+      --boot-wash:linear-gradient(135deg,#1C1710 0%,#15120A 38%,#173026 74%,#214736 100%);
+    }
+    :root[data-theme="light"]{
+      --boot-bg:#F7F4EC; --boot-ink:#1B1912; --boot-muted:#6B6558; --boot-faint:#948C79;
+      --boot-accent:#B5602A; --boot-green:#2E5C4E;
+      --boot-ring:rgba(27,25,18,.10); --boot-ring-2:rgba(27,25,18,.17);
+      --boot-track:rgba(27,25,18,.12);
+      --boot-wash:linear-gradient(135deg,#F9F6EF 0%,#F4F1E7 44%,#E7EFE9 80%,#D8E6DD 100%);
+    }
     html{ background:var(--boot-bg); }
     body{ margin:0; background:var(--boot-bg); }
 
     #boot-loader{
       position:fixed; inset:0; z-index:9999;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px;
-      background:var(--boot-bg);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      background:var(--boot-bg); background-image:var(--boot-wash);
       font-family:'Work Sans',-apple-system,'Segoe UI',sans-serif;
       /* Fades in slightly late, so a fast load never flashes a loader. */
-      opacity:0; animation:bootIn .3s ease .18s forwards;
+      opacity:0; animation:bootIn .35s ease .18s forwards;
     }
     @keyframes bootIn{ to{ opacity:1; } }
 
     #boot-loader.is-done{
       opacity:0; visibility:hidden;
-      transition:opacity .45s ease, visibility 0s linear .45s;
+      transition:opacity .5s ease, visibility 0s linear .5s;
       animation:none;
     }
 
-    .boot-mark{ width:60px; height:60px; display:block; }
-    .boot-ring{ transform-origin:15px 15px; animation:bootSpin 2.6s linear infinite; }
-    .boot-node{ transform-box:fill-box; transform-origin:center; animation:bootPulse 1.9s ease-in-out infinite; }
-    .boot-node.b{ animation-delay:.25s; }
-    .boot-node.c{ animation-delay:.5s; }
+    .boot-badge{ width:168px; height:168px; display:block; }
+    .boot-ring-spin{ transform-origin:60px 60px; animation:bootSpin 9s linear infinite; }
+    .boot-ring-spin.rev{ animation-duration:13s; animation-direction:reverse; }
+    .boot-node{ transform-box:fill-box; transform-origin:center; animation:bootPulse 2.1s ease-in-out infinite; }
+    .boot-node.b{ animation-delay:.3s; }
+    .boot-node.c{ animation-delay:.6s; }
     @keyframes bootSpin{ to{ transform:rotate(360deg); } }
-    @keyframes bootPulse{ 0%,100%{ opacity:.45; transform:scale(1); } 50%{ opacity:1; transform:scale(1.22); } }
+    @keyframes bootPulse{ 0%,100%{ opacity:.5; transform:scale(1); } 50%{ opacity:1; transform:scale(1.18); } }
 
-    .boot-word{
-      font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.2rem;
-      letter-spacing:.01em; color:var(--boot-ink);
+    .boot-name{
+      margin-top:34px;
+      font-size:.82rem; font-weight:600; text-transform:uppercase;
+      letter-spacing:.32em; text-indent:.32em;
+      color:var(--boot-muted); white-space:nowrap;
     }
-    .boot-word b{ color:var(--boot-accent); font-weight:600; }
 
-    .boot-bar{
-      width:132px; height:2px; border-radius:2px;
-      background:var(--boot-line); overflow:hidden; position:relative;
+    .boot-track{
+      margin-top:26px; width:212px; height:2px; border-radius:2px;
+      background:var(--boot-track); overflow:hidden; position:relative;
     }
-    .boot-bar::after{
-      content:""; position:absolute; inset:0; width:40%;
+    .boot-track::after{
+      content:""; position:absolute; top:0; bottom:0; left:0; width:34%;
       background:var(--boot-accent); border-radius:2px;
-      animation:bootSlide 1.25s cubic-bezier(.65,0,.35,1) infinite;
+      box-shadow:0 0 10px -1px var(--boot-accent);
+      animation:bootSlide 1.5s cubic-bezier(.65,0,.35,1) infinite;
     }
-    @keyframes bootSlide{ 0%{ transform:translateX(-110%); } 100%{ transform:translateX(360%); } }
+    @keyframes bootSlide{ 0%{ transform:translateX(-110%); } 100%{ transform:translateX(400%); } }
 
     /* Pure CSS escape hatch: if the bundle never arrives, say so. No inline
        script is possible here — the CSP forbids it. */
     .boot-slow{
-      margin:0; max-width:34ch; text-align:center; font-size:.82rem; line-height:1.5;
-      color:var(--boot-faint); opacity:0; animation:bootIn .4s ease 9s forwards;
+      margin:30px 20px 0; max-width:34ch; text-align:center;
+      font-size:.8rem; line-height:1.55; color:var(--boot-faint);
+      opacity:0; animation:bootIn .4s ease 9s forwards;
     }
     .boot-slow a{ color:var(--boot-accent); }
 
@@ -103,10 +119,16 @@
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
+    @media (max-width:520px){
+      .boot-badge{ width:132px; height:132px; }
+      .boot-name{ font-size:.68rem; letter-spacing:.22em; text-indent:.22em; margin-top:26px; }
+      .boot-track{ width:min(66vw,190px); }
+    }
+
     @media (prefers-reduced-motion: reduce){
       #boot-loader{ opacity:1; animation:none; }
-      .boot-ring,.boot-node,.boot-bar::after{ animation:none; }
-      .boot-bar::after{ width:100%; }
+      .boot-ring-spin,.boot-node,.boot-track::after{ animation:none; }
+      .boot-track::after{ width:100%; box-shadow:none; }
       .boot-slow{ animation:none; opacity:1; }
     }
   </style>
@@ -116,20 +138,33 @@
   <div id="boot-loader" role="status" aria-live="polite">
     <span class="boot-sr">Loading Nexora TechSolutions…</span>
 
-    <svg class="boot-mark" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-      <g class="boot-ring">
-        <circle cx="15" cy="15" r="13.4" stroke="var(--boot-line)" stroke-width="1" stroke-dasharray="3 6" />
+    <svg class="boot-badge" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <!-- Concentric rings framing the mark. -->
+      <circle cx="60" cy="60" r="52" stroke="var(--boot-ring)" stroke-width="1" />
+      <circle cx="60" cy="60" r="43" stroke="var(--boot-ring-2)" stroke-width="1" />
+      <!-- Slowly counter-rotating arcs give the rings some life. -->
+      <g class="boot-ring-spin">
+        <circle cx="60" cy="60" r="52" stroke="var(--boot-accent)" stroke-width="1"
+                stroke-linecap="round" stroke-dasharray="26 300" opacity=".85" />
       </g>
-      <line x1="9" y1="20" x2="15" y2="8" stroke="var(--boot-accent)" stroke-width="1.4" />
-      <line x1="15" y1="8" x2="21" y2="20" stroke="#74B39B" stroke-width="1.4" />
-      <line x1="9" y1="20" x2="21" y2="20" stroke="var(--boot-faint)" stroke-width="1.4" />
-      <circle class="boot-node a" cx="15" cy="8" r="3" fill="var(--boot-accent)" />
-      <circle class="boot-node b" cx="9" cy="20" r="3" fill="#74B39B" />
-      <circle class="boot-node c" cx="21" cy="20" r="3" fill="var(--boot-ink)" />
+      <g class="boot-ring-spin rev">
+        <circle cx="60" cy="60" r="43" stroke="var(--boot-green)" stroke-width="1"
+                stroke-linecap="round" stroke-dasharray="16 254" opacity=".7" />
+      </g>
+
+      <!-- Brand mark, scaled from its native 30x30 box into the centre. -->
+      <g transform="translate(30 32) scale(2)">
+        <line x1="9" y1="20" x2="15" y2="8" stroke="var(--boot-accent)" stroke-width="1" />
+        <line x1="15" y1="8" x2="21" y2="20" stroke="var(--boot-green)" stroke-width="1" />
+        <line x1="9" y1="20" x2="21" y2="20" stroke="var(--boot-faint)" stroke-width="1" />
+        <circle class="boot-node a" cx="15" cy="8" r="3" fill="var(--boot-accent)" />
+        <circle class="boot-node b" cx="9" cy="20" r="3" fill="var(--boot-green)" />
+        <circle class="boot-node c" cx="21" cy="20" r="3" fill="var(--boot-ink)" />
+      </g>
     </svg>
 
-    <span class="boot-word" aria-hidden="true">Nex<b>ora</b></span>
-    <div class="boot-bar" aria-hidden="true"></div>
+    <div class="boot-name" aria-hidden="true">Nexora Tech Solutions LLC</div>
+    <div class="boot-track" aria-hidden="true"></div>
 
     <p class="boot-slow">
       This is taking longer than usual. If it does not load, email
