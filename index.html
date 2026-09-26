@@ -66,8 +66,10 @@
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       background:var(--boot-bg); background-image:var(--boot-wash);
       font-family:'Work Sans',-apple-system,'Segoe UI',sans-serif;
-      /* Fades in slightly late, so a fast load never flashes a loader. */
-      opacity:0; animation:bootIn .35s ease .18s forwards;
+      /* Visible from the first painted frame. main.jsx holds it on screen for
+         a minimum time before fading, so it is always actually seen and still
+         never flashes. */
+      opacity:1;
     }
     @keyframes bootIn{ to{ opacity:1; } }
 
@@ -126,7 +128,6 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      #boot-loader{ opacity:1; animation:none; }
       .boot-ring-spin,.boot-node,.boot-track::after{ animation:none; }
       .boot-track::after{ width:100%; box-shadow:none; }
       .boot-slow{ animation:none; opacity:1; }
