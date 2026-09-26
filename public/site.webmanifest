@@ -1,0 +1,12 @@
+{
+  "name": "Nexora TechSolutions",
+  "short_name": "Nexora",
+  "description": "Technology consulting, AI enablement, and delivery services.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141109",
+  "theme_color": "#141109",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
