@@ -298,6 +298,20 @@ Cloudflare publishes keys that always give a fixed outcome:
 
 ---
 
+## Routing on Vercel
+
+This is a single-page app, so `vercel.json` rewrites every path to
+`/index.html` and lets React Router take it from there. Serverless functions
+under `/api` are matched before rewrites, so they are unaffected.
+
+**Do not set `cleanUrls: true`.** It makes `/index.html` a non-canonical path
+that 308-redirects to `/`, which breaks the SPA fallback: every route except
+`/` then returns a Vercel 404 on reload or direct navigation. The symptom is
+confusing because the site works fine while navigating client-side — only a
+refresh or a pasted link fails.
+
+---
+
 ## Theme
 
 The site ships **dark by default**, regardless of the visitor's OS setting. The
