@@ -11,3 +11,6 @@ npm-debug.log*
 yarn-error.log*
 .vite
 coverage
+
+# Local-only: contains database credentials. Never commit.
+scripts/create-table.js

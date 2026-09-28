@@ -1,42 +1,41 @@
-import { Link } from 'react-router-dom'
-import { useSeo } from '../lib/seo'
-import { NAV } from '../data/site'
-import { MagneticLink, Aurora, DotGrid } from '../components/Primitives'
+import { Link, useLocation } from 'react-router-dom'
+import { HeroBackdrop } from '../components/Blocks'
+import CountUp from '../components/CountUp'
+import WordReveal from '../components/WordReveal'
+import { ArrowLeft } from '../components/Icons'
+import { practiceFor } from '../data/site'
 
 export default function NotFound() {
-  useSeo({
-    title: 'Page not found',
-    description: 'That page does not exist on nexoratechsolutionsllc.com.',
-    path: '/404',
-  })
+  const { pathname } = useLocation()
+  const practice = practiceFor(pathname)
+  const back = practice ? `/${practice}` : '/'
+  const backLabel = practice === 'medical' ? 'Back to Nexora Medical' : practice ? 'Back to Nexora TechSolutions' : 'Back to start'
 
   return (
-    <section style={{ position: 'relative', overflow: 'hidden' }}>
-      <Aurora />
-      <DotGrid />
-      <div className="wrap notfound">
-        <span className="code">404</span>
-        <h1>That page moved, or never existed.</h1>
-        <p>
-          The link may be out of date. Everything on the site is one click away below — or tell us what you were
-          looking for and we will point you at it.
+    <section className="notfound">
+      <HeroBackdrop />
+      <div className="wrap notfound-inner">
+        <p className="code" aria-hidden="true">
+          <CountUp value="404" duration={1300} />
         </p>
-
-        <div className="hero-actions" style={{ justifyContent: 'center' }}>
-          <MagneticLink to="/" className="btn btn-primary">
-            Back to home
-          </MagneticLink>
-          <Link className="btn btn-ghost" to="/contact">
-            Contact us
+        <h1>
+          <WordReveal>This page doesn't exist.</WordReveal>
+        </h1>
+        <p className="lede">The link may be old, or the address mistyped. Everything we offer is one click from here.</p>
+        <div className="actions center">
+          <Link className="btn btn-primary" to={back}>
+            <ArrowLeft size={17} /> {backLabel}
           </Link>
-        </div>
-
-        <div className="chip-row" style={{ justifyContent: 'center', marginTop: 30, maxWidth: 620 }}>
-          {NAV.map((item) => (
-            <Link className="chip" to={item.to} key={item.to}>
-              {item.label}
+          {practice !== 'technical' && (
+            <Link className="btn btn-ghost" to="/technical">
+              Technical services
             </Link>
-          ))}
+          )}
+          {practice !== 'medical' && (
+            <Link className="btn btn-ghost" to="/medical">
+              Medical education
+            </Link>
+          )}
         </div>
       </div>
     </section>

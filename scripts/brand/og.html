@@ -1,0 +1,80 @@
+<!doctype html>
+<!--
+  Open Graph card template (1200×630). Rendered to public/og-technical.png and
+  public/og-medical.png by scripts/brand/render.mjs — open with ?medical for
+  the medical variant.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Work+Sans:wght@500;600&family=IBM+Plex+Mono:wght@500&display=block" rel="stylesheet">
+<style>
+  :root{--a:#E39352;--b:#74B39B;--ink:#F3EEE1;--soft:#B9AF97;--faint:#8A806A;}
+  .medical{--a:#74B39B;--b:#E39352;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:1200px;height:630px;overflow:hidden;}
+  body{
+    background:#141109;
+    background-image:
+      radial-gradient(circle at 88% 12%, color-mix(in srgb,var(--a) 30%,transparent) 0, transparent 42%),
+      radial-gradient(circle at 8% 100%, color-mix(in srgb,var(--b) 26%,transparent) 0, transparent 46%),
+      linear-gradient(135deg,#1C1710 0%,#15120A 45%,#131a14 100%);
+    color:var(--ink);font-family:'Work Sans',sans-serif;
+    padding:64px 72px;display:flex;flex-direction:column;position:relative;
+  }
+  .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1.2px,transparent 1.4px);background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 70% at 85% 30%,#000 10%,transparent 70%);}
+  .top{display:flex;align-items:center;gap:16px;position:relative;}
+  .word{font-family:'Fraunces',serif;font-weight:600;font-size:34px;letter-spacing:.01em;}
+  .word b{color:var(--a);font-weight:600;}
+  .kicker{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:17px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);
+    border:1px solid color-mix(in srgb,var(--a) 50%,transparent);padding:9px 18px;border-radius:999px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:auto;max-width:900px;position:relative;}
+  h1 em{font-style:italic;font-weight:500;color:var(--a);}
+  .chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px;position:relative;}
+  .chips span{font-family:'IBM Plex Mono',monospace;font-size:18px;color:var(--soft);border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);padding:8px 16px;border-radius:999px;}
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,.12);
+    font-family:'IBM Plex Mono',monospace;font-size:18px;color:var(--faint);letter-spacing:.04em;position:relative;}
+  .mark{position:absolute;right:64px;top:140px;opacity:.95;}
+</style>
+</head>
+<body>
+<div class="dots"></div>
+<svg class="mark" width="250" height="250" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
+  <circle cx="60" cy="60" r="43" stroke="rgba(255,255,255,.16)" stroke-width="1"/>
+  <circle cx="60" cy="60" r="52" stroke="var(--a)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="40 300" transform="rotate(-70 60 60)"/>
+  <circle cx="60" cy="60" r="43" stroke="var(--b)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="26 254" transform="rotate(110 60 60)"/>
+  <g transform="translate(30 32) scale(2)">
+    <line x1="9" y1="20" x2="15" y2="8" stroke="var(--a)" stroke-width="1"/>
+    <line x1="15" y1="8" x2="21" y2="20" stroke="var(--b)" stroke-width="1"/>
+    <line x1="9" y1="20" x2="21" y2="20" stroke="#8A806A" stroke-width="1"/>
+    <circle cx="15" cy="8" r="3" fill="var(--a)"/>
+    <circle cx="9" cy="20" r="3" fill="var(--b)"/>
+    <circle cx="21" cy="20" r="3" fill="#F3EEE1"/>
+  </g>
+</svg>
+<div class="top">
+  <span class="word" id="word">Nex<b>ora</b> TechSolutions</span>
+  <span class="kicker" id="kicker">Technical</span>
+</div>
+<h1 id="title">Empowering businesses through <em>transformative</em> technology.</h1>
+<div class="chips" id="chips"></div>
+<div class="foot"><span id="url">nexoratechsolutionsllc.com</span><span>Nexora TechSolutions LLC</span></div>
+<script>
+  var med = location.search.indexOf('medical') > -1
+  var chips = med
+    ? ['USMLE Coaching', 'Clinical Rotations', 'Research', 'Residency Match', 'Junior Scientist']
+    : ['Software', 'AI & Automation', 'QA', 'DevOps & Cloud', 'Consulting', 'SAFe® Training']
+  if (med) {
+    document.body.classList.add('medical')
+    document.getElementById('word').innerHTML = 'Nex<b>ora</b> Medical'
+    document.getElementById('kicker').textContent = 'Medical'
+    document.getElementById('title').innerHTML = 'From your first Step exam to <em>Match Day</em>, with one team owning the plan.'
+  }
+  document.getElementById('chips').innerHTML = chips.map(function (c) { return '<span>' + c.replace('&', '&amp;') + '</span>' }).join('')
+  var u = new URLSearchParams(location.search).get('host')
+  if (u) document.getElementById('url').textContent = u
+</script>
+</body>
+</html>

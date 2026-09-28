@@ -1,125 +1,99 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { NAV } from '../data/site'
-import { useTheme } from '../hooks/useTheme'
-import { useScrolled, useScrollProgress } from '../hooks/useMotion'
-import { Logo } from './Primitives'
-import { Icon } from './Icons'
+import BrandMark from './BrandMark'
+import ThemeToggle from './ThemeToggle'
+import { ArrowRight } from './Icons'
+import { PRACTICES } from '../data/site'
 
-export default function Header() {
+const DESKTOP_QUERY = '(min-width: 1181px)'
+
+export default function Header({ practice }) {
   const [open, setOpen] = useState(false)
-  const { theme, toggle } = useTheme()
-  const scrolled = useScrolled(10)
-  const progress = useScrollProgress()
-  const location = useLocation()
-  const panelRef = useRef(null)
-  const burgerRef = useRef(null)
+  const [scrolled, setScrolled] = useState(false)
+  const { pathname } = useLocation()
+  const p = practice ? PRACTICES[practice] : null
 
-  // Close the drawer on navigation.
-  useEffect(() => setOpen(false), [location.pathname])
+  // Close the drawer whenever the route changes.
+  useEffect(() => setOpen(false), [pathname])
 
-  // Lock the page behind the drawer and restore focus on close.
   useEffect(() => {
-    document.body.classList.toggle('nav-open', open)
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Escape closes; the page behind stops scrolling while the drawer is open.
+  useEffect(() => {
     if (!open) return
-
-    const onKey = (e) => {
-      if (e.key === 'Escape') {
-        setOpen(false)
-        burgerRef.current?.focus()
-      }
-      if (e.key !== 'Tab' || !panelRef.current) return
-
-      const focusable = panelRef.current.querySelectorAll('a[href], button:not([disabled])')
-      if (!focusable.length) return
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
-      }
-    }
-
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
     document.addEventListener('keydown', onKey)
+    document.documentElement.classList.add('menu-open')
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.classList.remove('nav-open')
+      document.documentElement.classList.remove('menu-open')
     }
   }, [open])
 
+  // Growing the window past the breakpoint dismisses the mobile drawer.
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_QUERY)
+    const onChange = (e) => e.matches && setOpen(false)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
   return (
-    <>
-      <div
-        className="scroll-progress"
-        style={{ transform: `scaleX(${progress})` }}
-        aria-hidden
-      />
-
-      <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
-        {/* Wider than the content container, so seven links plus the CTA fit. */}
-        <div className="wrap wrap-wide nav">
+    <header className="site-header" data-scrolled={scrolled} data-practice={practice || 'none'}>
+      <div className="wrap nav">
+        <div className="nav-left">
           <Link className="brand" to="/" aria-label="Nexora TechSolutions — home">
-            <Logo size={30} />
+            <BrandMark size={30} className="brand-mark" />
+            <span className="brand-word">
+              Nex<b>ora</b>
+            </span>
           </Link>
-
-          <nav
-            id="primary-nav"
-            className={`nav-links${open ? ' open' : ''}`}
-            ref={panelRef}
-            aria-label="Primary"
-          >
-            {NAV.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) => (isActive ? 'active' : undefined)}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-            <Link className="btn btn-primary" to="/contact">
-              Start a Conversation
-            </Link>
-          </nav>
-
-          <div className="nav-tools">
-            <button
-              type="button"
-              className="theme-toggle"
-              onClick={toggle}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            >
-              {theme === 'dark' ? Icon.sun(18) : Icon.moon(18)}
-            </button>
-
-            <button
-              type="button"
-              className="burger"
-              ref={burgerRef}
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-controls="primary-nav"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-            >
-              <i aria-hidden />
-            </button>
-          </div>
+          {p && (
+            <nav className="practice-switch" aria-label="Practice">
+              <NavLink to="/technical">Technical</NavLink>
+              <NavLink to="/medical">Medical</NavLink>
+            </nav>
+          )}
         </div>
-      </header>
 
-      {open && (
-        <button
-          type="button"
-          className="nav-scrim"
-          aria-label="Close menu"
-          onClick={() => setOpen(false)}
-        />
-      )}
-    </>
+        {p && (
+          <>
+            <nav id="site-nav" className="links" aria-label={`${p.name} sections`} data-open={open}>
+              {p.nav.map((item) => (
+                <NavLink key={item.to} className="nav-link" to={item.to}>
+                  {item.label}
+                </NavLink>
+              ))}
+              <Link className="btn btn-primary nav-cta" to={p.cta.to}>
+                {p.cta.label} <ArrowRight size={16} className="arrow" />
+              </Link>
+            </nav>
+            <div className="nav-backdrop" data-open={open} onClick={() => setOpen(false)} aria-hidden="true" />
+          </>
+        )}
+
+        <div className="nav-right">
+          <ThemeToggle />
+          {p && (
+            <button
+              type="button"
+              className="icon-btn burger"
+              aria-expanded={open}
+              aria-controls="site-nav"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <i />
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="scroll-progress" aria-hidden="true" />
+    </header>
   )
 }

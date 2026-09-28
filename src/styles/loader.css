@@ -1,0 +1,48 @@
+/* ===== Route loader ===== */
+/* Mirrors the boot loader in index.html; keep the two in step. */
+.page-loader{
+  min-height:58vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.page-loader-badge{width:132px;height:132px;display:block;}
+.pl-ring{transform-origin:60px 60px;}
+.pl-node{transform-box:fill-box;transform-origin:center;}
+
+.page-loader-name{
+  margin-top:26px;
+  font-size:.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.3em;text-indent:.3em;
+  color:var(--ink-faint);white-space:nowrap;
+}
+.page-loader-track{
+  margin-top:22px;width:186px;height:2px;border-radius:2px;
+  background:var(--line);overflow:hidden;position:relative;
+}
+.page-loader-track::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:34%;
+  background:var(--accent);border-radius:2px;
+  box-shadow:0 0 10px -1px var(--accent-glow);
+}
+@media (max-width:520px){
+  .page-loader-badge{width:108px;height:108px;}
+  .page-loader-name{font-size:.62rem;letter-spacing:.2em;text-indent:.2em;}
+  .page-loader-track{width:min(62vw,170px);}
+}
+
+@media (prefers-reduced-motion: no-preference){
+  /* Appears only if the chunk is actually slow, so a fast route change does
+     not flash a loader. */
+  .page-loader{opacity:0;animation:plIn .3s ease .2s forwards;}
+  .pl-ring{animation:spin360 9s linear infinite;}
+  .pl-ring.rev{animation-duration:13s;animation-direction:reverse;}
+  .pl-node{animation:plPulse 2.1s ease-in-out infinite;}
+  .pl-node.b{animation-delay:.3s;}
+  .pl-node.c{animation-delay:.6s;}
+  .page-loader-track::after{animation:plSlide 1.5s cubic-bezier(.65,0,.35,1) infinite;}
+}
+@media (prefers-reduced-motion: reduce){
+  .page-loader-track::after{width:100%;box-shadow:none;}
+}
+@keyframes plIn{to{opacity:1;}}
+@keyframes plPulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:1;transform:scale(1.18);}}
+@keyframes plSlide{0%{transform:translateX(-110%);}100%{transform:translateX(400%);}}

@@ -3,23 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <!-- Dark is the default; useTheme rewrites this when the visitor toggles. -->
-  <meta name="theme-color" content="#141109" />
-  <meta name="description" content="Nexora TechSolutions — technology consulting, AI enablement, and delivery services." />
+  <!--
+    Everything between the seo markers is replaced per route by
+    scripts/prerender.js (see src/lib/seo.js). What is here is the dev default.
+  -->
+  <!--seo:start-->
+  <title>Nexora TechSolutions LLC | Technology &amp; Medical Education</title>
+  <meta name="description" content="Two practices, one standard of delivery: software, AI, QA, DevOps and SAFe® training for businesses, plus USMLE coaching, research and Match support for IMGs." />
+  <!--seo:end-->
+  <!-- useTheme rewrites this when the theme changes. -->
+  <meta name="theme-color" content="#F7F4EC" />
   <meta name="author" content="Nexora TechSolutions LLC" />
-  <meta name="robots" content="index, follow" />
+  <meta name="format-detection" content="telephone=no" />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Nexora TechSolutions" />
-  <meta property="og:title" content="Nexora TechSolutions — Empowering businesses through transformative technology" />
-  <meta property="og:description" content="Software, AI and cloud systems that connect strategy to execution — end-to-end delivery from discovery through scale." />
-  <meta property="og:url" content="https://www.nexoratechsolutions.com/" />
-  <meta property="og:image" content="/og-image.svg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="canonical" href="https://www.nexoratechsolutions.com/" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,9 +30,11 @@
   <link id="gfonts" media="print" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Pages are prerendered, so without JS the content is still there:
+         drop the loader and the scroll-reveal hiding. -->
+    <style>#boot-loader{display:none!important}.reveal,.reveal>*,.word{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}</style>
   </noscript>
 
-  <title>Nexora TechSolutions</title>
   <script src="/theme-boot.js"></script>
 
   <!--
@@ -58,6 +58,9 @@
       --boot-track:rgba(27,25,18,.12);
       --boot-wash:linear-gradient(135deg,#F9F6EF 0%,#F4F1E7 44%,#E7EFE9 80%,#D8E6DD 100%);
     }
+    /* Medical pages lead with green, the same swap the site tokens make. */
+    :root[data-view="medical"]{ --boot-accent:#74B39B; --boot-green:#E39352; }
+    :root[data-view="medical"][data-theme="light"]{ --boot-accent:#2E5C4E; --boot-green:#B5602A; }
     html{ background:var(--boot-bg); }
     body{ margin:0; background:var(--boot-bg); }
 
@@ -177,8 +180,7 @@
   <div id="root"></div>
   <noscript>
     <div style="padding:40px;font-family:sans-serif;max-width:640px;margin:0 auto">
-      <h1>Nexora TechSolutions</h1>
-      <p>This site needs JavaScript enabled. Reach us directly at
+      <p>Parts of this site need JavaScript. Reach us directly at
         <a href="mailto:minchu@nexoratechsolutionsllc.com">minchu@nexoratechsolutionsllc.com</a>
         or +1 (678) 925-8885.</p>
     </div>

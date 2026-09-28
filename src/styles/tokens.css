@@ -1,5 +1,6 @@
 /* ===========================================================================
-   Nexora Design System — Tokens, reset, base type
+   Nexora design tokens — light is the base, [data-theme="dark"] overrides.
+   public/theme-boot.js always sets data-theme before first paint.
    =========================================================================== */
 :root{
   --bg:#F7F4EC;
@@ -7,8 +8,8 @@
   --surface:#FFFFFF;
   --surface-alt:#EFE9D9;
   --ink:#1B1912;
-  --ink-soft:#6B6558;
-  --ink-faint:#948C79;
+  --ink-soft:#645E52;
+  --ink-faint:#877F6C;
   --accent:#B5602A;
   --accent-ink:#FFF8F0;
   --accent-soft:#EFD6BC;
@@ -22,132 +23,92 @@
   --success:#2E5C4E;
   --shadow:0 1px 2px rgba(27,25,18,.04), 0 8px 24px -12px rgba(27,25,18,.15);
   --shadow-lg:0 2px 4px rgba(27,25,18,.05), 0 24px 56px -24px rgba(27,25,18,.28);
-  --radius-s:6px;
-  --radius-m:14px;
+
+  /* Always-dark band (AI section) — same in both themes, deeper in dark. */
+  --panel:#1B1912;
+  --panel-card:rgba(255,255,255,.045);
+  --panel-line:rgba(255,255,255,.12);
+  --panel-ink:#FBF7EE;
+  --panel-ink-soft:#C8C0AC;
+  --panel-ink-faint:#9C947F;
+
+  --radius-s:8px;
+  --radius-m:16px;
   --radius-l:28px;
   --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-body:'Work Sans', -apple-system, 'Segoe UI', sans-serif;
-  --font-mono:'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+  --font-body:'Work Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   --nav-h:68px;
   --ease-out:cubic-bezier(.22,1,.36,1);
   --ease-soft:cubic-bezier(.4,0,.2,1);
-  --dark-panel:#0E0C07;
-  --dark-card:#1A160E;
-  --dark-ink:#FBF7EE;
-  --dark-ink-soft:#C8C0AC;
-  --dark-ink-faint:#9C947F;
-  --dark-line:rgba(255,255,255,.12);
-}
-
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#141109;
-    --bg-deep:#0E0C07;
-    --surface:#1C1810;
-    --surface-alt:#231D13;
-    --ink:#F3EEE1;
-    --ink-soft:#B5AB92;
-    --ink-faint:#7E7460;
-    --accent:#E39352;
-    --accent-ink:#241505;
-    --accent-soft:#4A3018;
-    --accent-glow:rgba(227,147,82,.22);
-    --accent2:#74B39B;
-    --accent2-soft:#1D2E26;
-    --accent2-glow:rgba(116,179,155,.18);
-    --line:#332B1B;
-    --line-strong:#463A24;
-    --danger:#E2856A;
-    --success:#74B39B;
-    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
-    --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 28px 64px -28px rgba(0,0,0,.8);
-  }
+  color-scheme:light;
 }
 
 :root[data-theme="dark"]{
   --bg:#141109;
   --bg-deep:#0E0C07;
   --surface:#1C1810;
-  --surface-alt:#231D13;
+  --surface-alt:#211B12;
   --ink:#F3EEE1;
-  --ink-soft:#B5AB92;
-  --ink-faint:#7E7460;
+  --ink-soft:#B9AF97;
+  --ink-faint:#8A806A;
   --accent:#E39352;
   --accent-ink:#241505;
   --accent-soft:#4A3018;
-  --accent-glow:rgba(227,147,82,.22);
+  --accent-glow:rgba(227,147,82,.2);
   --accent2:#74B39B;
   --accent2-soft:#1D2E26;
-  --accent2-glow:rgba(116,179,155,.18);
+  --accent2-glow:rgba(116,179,155,.16);
   --line:#332B1B;
   --line-strong:#463A24;
   --danger:#E2856A;
   --success:#74B39B;
   --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
   --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 28px 64px -28px rgba(0,0,0,.8);
+  --panel:#0B0905;
+  color-scheme:dark;
 }
 
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);}
-@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--font-body);
-  font-size:16px;
-  line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
+/* ===== Medical re-tint: green leads, orange supports ===== */
+:root[data-view="medical"]:not([data-theme="dark"]){
+  --accent:#2E5C4E;
+  --accent-soft:#D3E2DA;
+  --accent-ink:#F2FAF6;
+  --accent-glow:rgba(46,92,78,.16);
+  --accent2:#B5602A;
+  --accent2-soft:#EFD6BC;
+  --accent2-glow:rgba(181,96,42,.16);
 }
-body.nav-open{overflow:hidden;}
-
-img,svg{max-width:100%;}
-[hidden]{display:none!important;}
-a{color:inherit;}
-h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0;color:var(--ink);}
-p{margin:0;text-wrap:pretty;}
-ul{margin:0;padding:0;list-style:none;}
-button{font:inherit;color:inherit;}
-::selection{background:var(--accent);color:var(--accent-ink);}
-
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
-
-/* Scrollbar */
-*::-webkit-scrollbar{width:11px;height:11px;}
-*::-webkit-scrollbar-track{background:var(--bg-deep);}
-*::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px;border:3px solid var(--bg-deep);}
-*::-webkit-scrollbar-thumb:hover{background:var(--accent);}
-
-/* ===== Layout primitives ===== */
-.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:clamp(18px,4vw,48px);}
-.wrap-wide{max-width:1320px;}
-section{padding-block:clamp(56px,9vw,108px);position:relative;}
-.section-head{max-width:640px;margin-bottom:clamp(32px,5vw,56px);display:flex;flex-direction:column;gap:14px;}
-.section-head.center{margin-inline:auto;text-align:center;align-items:center;}
-.section-head h2{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.12;}
-.lede{color:var(--ink-soft);font-size:1.05rem;max-width:62ch;}
-.divider{border:none;border-top:1px solid var(--line);margin:0;}
-.stack{display:flex;flex-direction:column;}
-.skip-link{
-  position:absolute;left:-9999px;top:0;z-index:999;
-  background:var(--accent);color:var(--accent-ink);
-  padding:12px 20px;border-radius:0 0 var(--radius-s) 0;font-weight:600;text-decoration:none;
+:root[data-view="medical"][data-theme="dark"]{
+  --accent:#74B39B;
+  --accent-soft:#1D2E26;
+  --accent-ink:#0E1A15;
+  --accent-glow:rgba(116,179,155,.2);
+  --accent2:#E39352;
+  --accent2-soft:#4A3018;
+  --accent2-glow:rgba(227,147,82,.16);
 }
-.skip-link:focus{left:0;}
 
-.eyebrow{
-  font-family:var(--font-mono);
-  font-size:.72rem;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--accent);
-  display:flex;
-  align-items:center;
-  gap:.6em;
-  margin:0;
+/* Inside the always-dark band, use the dark-theme accents for contrast. */
+.dark-panel{
+  --accent:#E39352;
+  --accent-ink:#241505;
+  --accent-soft:rgba(227,147,82,.16);
+  --accent-glow:rgba(227,147,82,.2);
+  --accent2:#74B39B;
+  --accent2-glow:rgba(116,179,155,.16);
+  --ink:var(--panel-ink);
+  --ink-soft:var(--panel-ink-soft);
+  --ink-faint:var(--panel-ink-faint);
+  --line:var(--panel-line);
+  --line-strong:rgba(255,255,255,.18);
+  --surface:var(--panel-card);
 }
-.section-head.center .eyebrow{justify-content:center;}
-.eyebrow::before{content:"";width:1.4em;height:1px;background:var(--accent);display:inline-block;flex-shrink:0;}
+:root[data-view="medical"] .dark-panel{
+  --accent:#74B39B;
+  --accent-ink:#0E1A15;
+  --accent-soft:rgba(116,179,155,.16);
+  --accent-glow:rgba(116,179,155,.2);
+  --accent2:#E39352;
+  --accent2-glow:rgba(227,147,82,.16);
+}

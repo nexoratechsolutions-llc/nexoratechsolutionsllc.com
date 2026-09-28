@@ -1,11 +1,13 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import App from './App'
+import App, { ROUTER_FUTURE } from './App'
 
 import './styles/tokens.css'
+import './styles/base.css'
 import './styles/components.css'
-import './styles/effects.css'
+import './styles/pages.css'
+import './styles/loader.css'
 
 /**
  * How long the boot loader stays on screen at minimum, measured from when the
@@ -26,13 +28,19 @@ const MIN_VISIBLE_MS = 1500
  * reveal an unstyled or half-drawn page.
  */
 function dismissBootLoader() {
+  const release = () => document.documentElement.classList.remove('booting')
   const el = document.getElementById('boot-loader')
-  if (!el) return
+  if (!el) {
+    release()
+    return
+  }
 
   const fadeOut = () => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         el.classList.add('is-done')
+        // Entrance effects and count-ups start as the loader fades.
+        release()
         // Matches the CSS fade; removing the node frees the fixed overlay.
         const done = () => el.remove()
         el.addEventListener('transitionend', done, { once: true })
@@ -48,12 +56,27 @@ function dismissBootLoader() {
   setTimeout(fadeOut, Math.max(0, MIN_VISIBLE_MS - performance.now()))
 }
 
-createRoot(document.getElementById('root')).render(
+const app = (
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter future={ROUTER_FUTURE}>
       <App />
     </BrowserRouter>
   </StrictMode>
 )
+
+/*
+ * Production pages are prerendered (scripts/prerender.js) and tagged with the
+ * route they were rendered for. Hydrate only when that matches the address
+ * bar; anything else — dev server, a host that falls back to index.html, the
+ * 404 page — renders fresh on the client.
+ */
+const container = document.getElementById('root')
+const norm = (p) => p.replace(/\/+$/, '') || '/'
+const rendered = container.dataset.route
+if (rendered && container.firstElementChild && norm(rendered) === norm(location.pathname)) {
+  hydrateRoot(container, app)
+} else {
+  createRoot(container).render(app)
+}
 
 dismissBootLoader()

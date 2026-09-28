@@ -1,9 +1,10 @@
 /*
  * Runs before first paint.
  *
- * 1. Applies the theme, so there is no flash of the wrong one. Dark is the
- *    site's default; a visitor's explicit choice always wins over it.
- * 2. Promotes the web-font stylesheet from media="print" to media="all" once
+ * 1. Applies the theme, so there is no flash of the wrong one. A visitor's
+ *    saved choice wins; otherwise the operating-system setting is used.
+ * 2. Marks medical pages so the boot loader and site tokens lead with green.
+ * 3. Promotes the web-font stylesheet from media="print" to media="all" once
  *    it has loaded. Declaring it as print keeps it off the critical path, so a
  *    slow or unreachable fonts.googleapis.com cannot stop the page painting.
  *
@@ -11,14 +12,26 @@
  * Policy allows scripts only from 'self'.
  */
 (function () {
-  var theme = 'dark'
+  var root = document.documentElement
+  var theme = null
   try {
     var saved = localStorage.getItem('nexora-theme')
     if (saved === 'light' || saved === 'dark') theme = saved
-  } catch {
-    /* private mode or blocked storage — fall back to the default */
+  } catch (e) {
+    /* private mode or blocked storage — fall back to the system setting */
   }
-  document.documentElement.setAttribute('data-theme', theme)
+  if (!theme) {
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    theme = prefersDark ? 'dark' : 'light'
+  }
+  root.setAttribute('data-theme', theme)
+  // Held until the boot loader lifts (main.jsx), so entrance effects play in view.
+  root.classList.add('booting')
+
+  var meta = document.querySelector('meta[name="theme-color"]')
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#141109' : '#F7F4EC')
+
+  if (location.pathname.indexOf('/medical') === 0) root.setAttribute('data-view', 'medical')
 
   var fonts = document.getElementById('gfonts')
   if (!fonts) return

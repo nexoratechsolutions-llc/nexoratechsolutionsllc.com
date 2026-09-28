@@ -1,46 +1,27 @@
 import { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { COMPANY } from '../data/site'
 
 /**
- * Catches render errors in a route so a single broken page does not blank the
- * whole site. The error itself is logged, never shown to the visitor.
+ * Catches render errors — most often a route chunk that no longer exists
+ * after a new deploy — and offers a reload instead of a blank page.
  */
 export default class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { hasError: false }
-  }
+  state = { error: null }
 
-  static getDerivedStateFromError() {
-    return { hasError: true }
-  }
-
-  componentDidCatch(error, info) {
-    console.error('[nexora] Route render failed', error, info?.componentStack)
+  static getDerivedStateFromError(error) {
+    return { error }
   }
 
   render() {
-    if (!this.state.hasError) return this.props.children
-
+    if (!this.state.error) return this.props.children
     return (
-      <section className="wrap notfound">
-        <p className="eyebrow">Something went wrong</p>
-        <h1>This page did not load correctly.</h1>
-        <p>
-          The error has been logged. Try reloading, or reach us directly at{' '}
-          <a href={`mailto:${COMPANY.email}`} style={{ color: 'var(--accent)' }}>
-            {COMPANY.email}
-          </a>
-          .
-        </p>
-        <div className="hero-actions" style={{ justifyContent: 'center' }}>
+      <section className="notfound">
+        <div className="wrap notfound-inner">
+          <p className="eyebrow">Something went wrong</p>
+          <h1>This page didn't load.</h1>
+          <p className="lede">A newer version of the site may have been published. Reloading usually fixes it.</p>
           <button type="button" className="btn btn-primary" onClick={() => window.location.reload()}>
             Reload the page
           </button>
-          <Link className="btn btn-ghost" to="/">
-            Back to home
-          </Link>
         </div>
       </section>
     )

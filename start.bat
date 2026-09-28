@@ -35,13 +35,13 @@ if not exist "node_modules" (
 )
 
 echo.
-echo  [i] Starting Vite on http://localhost:5173
-echo  [i] The /api routes are served too, so the forms work here.
+echo  [i] Starting Vite. Your browser opens automatically once it is ready.
+echo  [i] Vite prefers port 5173; if another app is using it, the next free
+echo      port is used and the address is printed below.
 echo  [i] Press Ctrl+C in this window to stop the server.
 echo.
 
-start "" http://localhost:5173
-call npm run dev
+call npm run dev -- --open
 
 echo.
 echo  [i] Dev server stopped.

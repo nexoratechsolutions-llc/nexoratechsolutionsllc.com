@@ -1,0 +1,32 @@
+<!doctype html>
+<!--
+  App icon template. Rendered at 512, 192 and 180 px by scripts/brand/render.mjs
+  (?size=N). The mark sits inside the central 60% so it survives maskable crops.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  *{margin:0;padding:0;}
+  html,body{overflow:hidden;background:#1B1912;}
+  body{display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 80% 15%,rgba(227,147,82,.28),transparent 50%),radial-gradient(circle at 10% 100%,rgba(116,179,155,.24),transparent 55%),#1B1912;}
+  svg{width:62%;height:62%;}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 30 30" fill="none">
+  <line x1="9" y1="20" x2="15" y2="8" stroke="#E39352" stroke-width="1.5"/>
+  <line x1="15" y1="8" x2="21" y2="20" stroke="#74B39B" stroke-width="1.5"/>
+  <line x1="9" y1="20" x2="21" y2="20" stroke="#948C79" stroke-width="1.5"/>
+  <circle cx="15" cy="8" r="3.2" fill="#E39352"/>
+  <circle cx="9" cy="20" r="3.2" fill="#74B39B"/>
+  <circle cx="21" cy="20" r="3.2" fill="#F7F4EC"/>
+</svg>
+<script>
+  var s = parseInt(new URLSearchParams(location.search).get('size') || '512', 10)
+  document.documentElement.style.width = document.documentElement.style.height = s + 'px'
+  document.body.style.width = document.body.style.height = s + 'px'
+</script>
+</body>
+</html>

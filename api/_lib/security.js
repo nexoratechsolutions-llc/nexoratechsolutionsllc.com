@@ -1,152 +1,106 @@
 /**
- * Request-level security helpers for the Nexora API routes.
- * Node runtime (Vercel Serverless Functions).
+ * Shared request security for the /api functions.
+ * (Files under api/_lib are helpers; Vercel does not expose them as routes.)
+ *
+ *   FORM_TOKEN_SECRET  HMAC key for anti-CSRF form tokens (required on Vercel)
+ *   ALLOWED_ORIGINS    comma-separated extra origins allowed to call the API
+ *                      cross-origin, e.g. http://localhost:3000. The site's own
+ *                      origin is always allowed.
  */
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
 
-/** Hard security headers on every API response. */
-export function applySecurityHeaders(res) {
-  res.setHeader('X-Content-Type-Options', 'nosniff')
-  res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Referrer-Policy', 'no-referrer')
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-  res.setHeader('Pragma', 'no-cache')
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow')
-  // API responses are JSON only — deny any attempt to frame or embed them.
-  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox")
-}
+/* ---------- origins & CORS ---------- */
 
-/** Origins permitted to call the API. */
 function allowedOrigins() {
-  const configured = (process.env.ALLOWED_ORIGINS || '')
+  return String(process.env.ALLOWED_ORIGINS || '')
     .split(',')
-    .map((o) => o.trim())
+    .map((o) => o.trim().replace(/\/+$/, '').toLowerCase())
     .filter(Boolean)
-
-  // Vercel injects the deployment host; allow the site to call itself.
-  const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
-
-  return [...configured, ...(vercelUrl ? [vercelUrl] : [])]
-}
-
-/** Any loopback origin, on any port — development only. */
-function isLocalDevOrigin(origin) {
-  if (process.env.NODE_ENV === 'production') return false
-  try {
-    const { hostname, protocol } = new URL(origin)
-    return protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]')
-  } catch {
-    return false
-  }
 }
 
 /**
- * Same-origin enforcement. Browsers cannot forge Origin, so a strict check
- * here is the primary CSRF defence for these JSON endpoints.
- * Returns the echo-able origin, or null when the request must be rejected.
+ * Same-origin requests always pass. A different origin passes only when it is
+ * listed in ALLOWED_ORIGINS, and then gets CORS headers. Requests without an
+ * Origin header (non-browser clients) pass here; the form token, Turnstile and
+ * rate limits still apply to them.
  */
 export function checkOrigin(req) {
   const origin = req.headers.origin
-  const list = allowedOrigins()
-
-  // No Origin header: same-origin non-CORS request (e.g. curl, server-side).
-  // We still require the custom header below, which browsers cannot set
-  // cross-origin without a successful preflight.
-  if (!origin) return ''
-
-  // Whatever port the dev server lands on, local development should just work.
-  // This is inert in production, where NODE_ENV is 'production'.
-  if (isLocalDevOrigin(origin)) return origin
-
-  return list.includes(origin) ? origin : null
-}
-
-/**
- * Requires the custom `X-Nexora-Request` header. A cross-origin form POST or
- * an <img>/<form> CSRF attempt cannot set custom headers without a preflight
- * that our origin check would already fail.
- */
-export function hasCustomHeader(req) {
-  return req.headers['x-nexora-request'] === '1'
-}
-
-/** Best-effort client IP, preferring Vercel's trusted header. */
-export function clientIp(req) {
-  const real = req.headers['x-real-ip']
-  if (typeof real === 'string' && real) return real
-
-  const fwd = req.headers['x-forwarded-for']
-  if (typeof fwd === 'string' && fwd) return fwd.split(',')[0].trim()
-
-  return req.socket?.remoteAddress || 'unknown'
-}
-
-/**
- * Reads and parses a JSON body with a hard byte ceiling, so an oversized
- * payload is dropped before it is ever parsed.
- */
-export async function readJsonBody(req, maxBytes) {
-  // Vercel may have parsed it already; re-check the size in that case.
-  if (req.body && typeof req.body === 'object') {
-    const size = Buffer.byteLength(JSON.stringify(req.body))
-    if (size > maxBytes) throw new PayloadError('Payload too large.', 413)
-    return req.body
-  }
-
-  const chunks = []
-  let total = 0
-
-  for await (const chunk of req) {
-    total += chunk.length
-    if (total > maxBytes) {
-      req.destroy()
-      throw new PayloadError('Payload too large.', 413)
-    }
-    chunks.push(chunk)
-  }
-
-  const raw = Buffer.concat(chunks).toString('utf8')
-  if (!raw) throw new PayloadError('Empty request body.', 400)
-
+  if (!origin) return { ok: true, cors: null }
+  let url
   try {
-    const parsed = JSON.parse(raw)
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-      throw new PayloadError('Malformed request body.', 400)
-    }
-    return parsed
-  } catch (err) {
-    if (err instanceof PayloadError) throw err
-    throw new PayloadError('Malformed JSON.', 400)
+    url = new URL(origin)
+  } catch {
+    return { ok: false, cors: null }
   }
+  if (url.host === req.headers.host) return { ok: true, cors: null }
+  const listed = allowedOrigins().includes(url.origin.toLowerCase())
+  return { ok: listed, cors: listed ? url.origin : null }
 }
 
-export class PayloadError extends Error {
-  constructor(message, status = 400) {
-    super(message)
-    this.name = 'PayloadError'
-    this.status = status
+export function applyCors(res, corsOrigin) {
+  if (!corsOrigin) return
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin)
+  res.setHeader('Vary', 'Origin')
+}
+
+/** Answers a CORS preflight. Returns true when the request was handled. */
+export function handlePreflight(req, res, methods) {
+  if (req.method !== 'OPTIONS') return false
+  const { ok, cors } = checkOrigin(req)
+  if (!ok) {
+    res.statusCode = 403
+    res.end()
+    return true
   }
+  applyCors(res, cors)
+  res.setHeader('Access-Control-Allow-Methods', `${methods}, OPTIONS`)
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Max-Age', '600')
+  res.statusCode = 204
+  res.end()
+  return true
 }
 
-/** Escapes a value for safe interpolation into an HTML email. */
-export function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
+/* ---------- signed form tokens (anti-CSRF + trusted fill time) ---------- */
+
+export const FORM_TOKEN_TTL_MS = 2 * 60 * 60 * 1000 // a form left open longer must refresh
+export const MIN_FILL_MS = 3000 // faster than a person can fill the form
+
+/** The signing secret, or null when unset (allowed locally only). */
+export function formTokenSecret() {
+  const secret = process.env.FORM_TOKEN_SECRET
+  if (secret) return secret
+  if (process.env.VERCEL) throw new Error('FORM_TOKEN_SECRET is not set')
+  return null
 }
 
-/** Strips CR/LF so user input can never inject email headers. */
-export function sanitizeHeaderValue(value) {
-  return String(value ?? '')
-    .replace(/[\r\n]+/g, ' ')
-    .trim()
-    .slice(0, 200)
+const sign = (secret, payload) => createHmac('sha256', secret).update(payload).digest('base64url')
+
+/** Token format: v1.<issuedAtMs>.<nonce>.<hmac> */
+export function issueFormToken(secret, now = Date.now()) {
+  const payload = `v1.${now}.${randomBytes(12).toString('base64url')}`
+  return `${payload}.${sign(secret, payload)}`
 }
 
-export function json(res, status, payload) {
-  applySecurityHeaders(res)
-  res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8')
-  res.end(JSON.stringify(payload))
+/**
+ * Checks signature, age and single use. Returns { ok, nonce } or
+ * { ok: false, reason } with reason: invalid | expired | used | too_fast (+ waitMs).
+ */
+export function verifyFormToken(secret, token, usedNonces, now = Date.now()) {
+  if (typeof token !== 'string' || token.length > 200) return { ok: false, reason: 'invalid' }
+  const parts = token.split('.')
+  if (parts.length !== 4 || parts[0] !== 'v1') return { ok: false, reason: 'invalid' }
+  const [, issued, nonce, sig] = parts
+  const expected = Buffer.from(sign(secret, `v1.${issued}.${nonce}`))
+  const given = Buffer.from(sig)
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return { ok: false, reason: 'invalid' }
+
+  const issuedAt = Number(issued)
+  if (!Number.isFinite(issuedAt) || issuedAt > now + 30_000) return { ok: false, reason: 'invalid' }
+  const age = now - issuedAt
+  if (age > FORM_TOKEN_TTL_MS) return { ok: false, reason: 'expired' }
+  if (usedNonces.has(nonce)) return { ok: false, reason: 'used' }
+  if (age < MIN_FILL_MS) return { ok: false, reason: 'too_fast', waitMs: MIN_FILL_MS - age }
+  return { ok: true, nonce }
 }
