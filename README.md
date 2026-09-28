@@ -67,54 +67,49 @@ After going live, submit `https://<domain>/sitemap.xml` in Google Search Console
 2. If the live domain is not `https://www.nexoratechsolutionsllc.com`, set `VITE_SITE_URL` (see `.env.example`). Then run `node scripts/brand/render.mjs` so the domain shown on the social cards matches.
 3. `cleanUrls` serves `/technical/about` from `technical/about.html`. Unknown paths get `404.html` with a 404 status.
 
-## Contact form (sends email)
+## Contact form (saves to the database)
 
-The forms post to `/api/contact` (`api/contact.js`). That function sends each submission through Gmail SMTP to the company inbox, with the visitor's address set as Reply-To. Under `npm run dev` and `npm run preview`, `vite-plugins/api-dev.js` runs the same function locally.
+The forms post to `/api/contact` (`api/contact.js`). That function saves each submission to Supabase (`public.form_submissions`), where the admin dashboard shows it. **No email is sent.** The visitor sees the thank-you panel only once the row is saved; if saving fails, the form shows an error with your phone number. Under `npm run dev` and `npm run preview`, `vite-plugins/api-dev.js` runs the same function locally.
 
 Set these **server-only** variables. For local runs, put them in `.env` (gitignored; see `.env.example`). On Vercel, add them under **Settings → Environment Variables**:
 
 | Variable | Value |
 | --- | --- |
-| `GMAIL_USER` | the Gmail account that sends |
-| `GMAIL_APP_PASSWORD` | its 16-character Google app password |
-| `CONTACT_TO` | inbox that receives submissions (default `minchu@nexoratechsolutionsllc.com`) |
-
+| `SUPABASE_URL`, `SUPABASE_ANON_KEY` | database the submissions are saved to |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (**required on Vercel**) |
 | `VITE_TURNSTILE_SITE_KEY` | Turnstile site key. It is public and ends up in the page |
 | `FORM_TOKEN_SECRET` | signs the anti-CSRF form token (**required on Vercel**; use a long random value) |
 | `ALLOWED_ORIGINS` | extra origins allowed to call `/api` cross-origin, comma-separated (the site itself is always allowed) |
-| `CONTACT_DRY_RUN` | `1` = test the whole flow locally without sending (ignored on Vercel) |
+| `CONTACT_DRY_RUN` | `1` = test the whole flow locally without writing to the database (ignored on Vercel) |
 
 ### Protection
 
 **Signed form token (anti-CSRF).** When the form appears, it fetches a token from `GET /api/form-token`, an HMAC signed with `FORM_TOKEN_SECRET`. The API refuses a submission when the token is:
 - missing or forged;
 - expired (older than 2 h);
-- already used — each token sends at most one message;
+- already used — each token submits at most one message;
 - issued less than 3 s before sending. This minimum fill time uses the server's own clock, so it can't be faked.
 
 **Origins.** Same-site requests are always accepted. Origins in `ALLOWED_ORIGINS` also get CORS, including the preflight. Every other origin is refused.
 
 **Cloudflare Turnstile.** A widget sits in each form, and every submission is verified server-side. In the Turnstile dashboard, list every hostname you use: your domain, `*.vercel.app` preview domains, and `localhost`.
 
-**Duplicate submissions.** Five layers stop the same message going out twice:
+**Duplicate submissions.** Five layers stop the same message being saved twice:
 - a synchronous lock, so a double-click sends one request;
-- a submission ID the server remembers, so retries never send twice;
+- a submission ID the server remembers, so retries never save twice;
 - the same email + message within 1 hour is recognised, in the browser and on the server;
 - a 30-second cooldown after each send, which survives a reload;
-- "already being sent" detection for concurrent requests.
+- "already being saved" detection for concurrent requests.
 
 **Rate limits (server).** Waits are shown to the visitor as a live countdown.
 
 | Limit | Value |
 | --- | --- |
 | Attempts per IP | 20 per 10 min |
-| Sends per IP | 3 per 10 min, 10 per day |
-| Sends per email address | 3 per hour |
+| Submissions per IP | 3 per 10 min, 10 per day |
+| Submissions per email address | 3 per hour |
 
 **Bots.** A hidden honeypot field and a minimum fill time catch simple bots. Only same-origin posts are accepted.
-
-**Safety.** The recipient is fixed on the server, so the endpoint can't be used to send email anywhere else. If sending fails, the form offers a pre-filled email-app link and your phone number.
 
 **Limitation.** The rate limits and duplicate memory live in each serverless instance and reset on a cold start. Turnstile is the hard gate. For limits shared across all instances, add a store such as Upstash Redis / Vercel KV.
 
@@ -136,11 +131,11 @@ Both contact pages end with a full-width Google Map of the office (`src/componen
 The site includes a comprehensive, pro-designed Admin Portal at `/admin` (or `/admin/login`).
 
 ### Features
-- **Form Submissions Storage**: All website contact form submissions automatically send notification emails via Gmail SMTP and save structured records to Supabase (`public.form_submissions`).
+- **Form Submissions Storage**: All website contact form submissions are saved as structured records in Supabase (`public.form_submissions`). No emails are sent.
 - **Live Realtime Sync**: Connects to Supabase Realtime via WebSockets so new inbound submissions appear instantly without page reload.
-- **KPI Metrics**: Live counts of Total, New/Unread, In Progress, Contacted/Resolved, Starred, and Email Delivery Rate.
+- **KPI Metrics**: Live counts of Total, New/Unread, In Progress, Contacted/Resolved, and Starred.
 - **Search & Filters**: Search across name, email, phone, topic, and message text; filter by Form category (Medical vs. Technical), status, and starred flag; sort by newest/oldest/alphabetical.
-- **Detail Drawer & Notes**: View full customer inquiries, technical metadata, email delivery status, toggle status flags, write internal team notes, and compose instant email replies.
+- **Detail Drawer & Notes**: View full customer inquiries, technical metadata, toggle status flags, write internal team notes, and compose instant email replies.
 - **Data Export**: 1-click export of filtered or complete submissions to CSV and JSON formats.
 - **Security & RLS**: PostgreSQL Row-Level Security allows public visitors only to submit forms (`INSERT`), while restricting data retrieval (`SELECT`), updates (`UPDATE`), and deletions (`DELETE`) strictly to authenticated administrators.
 - **Credential Self-Management**: Built-in modal to securely update admin password.

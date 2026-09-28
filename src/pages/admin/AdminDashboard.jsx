@@ -233,7 +233,6 @@ export default function AdminDashboard({ user, onSignOut }) {
       'Topic',
       'Status',
       'Starred',
-      'Email Sent',
       'Message',
       'Notes',
     ]
@@ -251,7 +250,6 @@ export default function AdminDashboard({ user, onSignOut }) {
           JSON.stringify(s.topic || ''),
           JSON.stringify(s.status),
           JSON.stringify(s.is_starred ? 'Yes' : 'No'),
-          JSON.stringify(s.email_sent ? 'Sent' : 'Failed'),
           JSON.stringify(s.message || ''),
           JSON.stringify(s.notes || ''),
         ].join(',')
@@ -395,10 +393,8 @@ export default function AdminDashboard({ user, onSignOut }) {
     const inProgress = submissions.filter((s) => s.status === 'in_progress').length
     const contacted = submissions.filter((s) => s.status === 'contacted' || s.status === 'resolved').length
     const starred = submissions.filter((s) => s.is_starred).length
-    const emailSentCount = submissions.filter((s) => s.email_sent).length
-    const deliveryRate = total > 0 ? Math.round((emailSentCount / total) * 100) : 100
 
-    return { total, unread, inProgress, contacted, starred, deliveryRate }
+    return { total, unread, inProgress, contacted, starred }
   }, [submissions])
 
   const formatDate = (isoString) => {
@@ -775,7 +771,6 @@ export default function AdminDashboard({ user, onSignOut }) {
                   <th>Form / Service</th>
                   <th>Topic &amp; Message</th>
                   <th>Phone</th>
-                  <th>Email Delivery</th>
                   <th>Status</th>
                   <th>Date</th>
                   <th style={{ width: '80px', textAlign: 'right' }}>Actions</th>
@@ -833,28 +828,6 @@ export default function AdminDashboard({ user, onSignOut }) {
                       <td>
                         <span style={{ fontSize: '12px', color: sub.phone ? 'var(--ink)' : 'var(--ink-faint)' }}>
                           {sub.phone || '—'}
-                        </span>
-                      </td>
-
-                      {/* Email delivery badge */}
-                      <td>
-                        <span className={`email-badge ${sub.email_sent ? 'sent' : 'failed'}`}>
-                          {sub.email_sent ? (
-                            <>
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                              <span>Sent</span>
-                            </>
-                          ) : (
-                            <>
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                              </svg>
-                              <span>Saved</span>
-                            </>
-                          )}
                         </span>
                       </td>
 
@@ -1123,16 +1096,10 @@ export default function AdminDashboard({ user, onSignOut }) {
                 </button>
               </div>
 
-              {/* Technical / Email Info */}
+              {/* Technical info */}
               <div className="drawer-section-title" style={{ marginTop: '24px' }}>System Diagnostics</div>
               <div style={{ fontSize: '12px', color: 'var(--ink-soft)', background: 'var(--bg-deep)', padding: '12px', borderRadius: '6px' }}>
-                <div>Email Delivery: <strong>{selectedSubmission.email_sent ? 'Delivered via Gmail SMTP' : 'Saved in Supabase DB'}</strong></div>
-                {selectedSubmission.email_error && (
-                  <div style={{ color: 'var(--danger)', marginTop: '4px' }}>
-                    Email Error: {selectedSubmission.email_error}
-                  </div>
-                )}
-                <div style={{ marginTop: '4px' }}>Client IP: <code>{selectedSubmission.ip || 'Unknown'}</code></div>
+                <div>Client IP: <code>{selectedSubmission.ip || 'Unknown'}</code></div>
                 <div style={{ marginTop: '4px' }}>Submission Ref: <code>{selectedSubmission.submission_id || 'N/A'}</code></div>
               </div>
             </div>

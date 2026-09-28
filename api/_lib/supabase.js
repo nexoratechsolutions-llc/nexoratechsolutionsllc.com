@@ -23,8 +23,6 @@ export async function saveSubmission({
   message,
   submissionId = null,
   ip = '',
-  emailSent = false,
-  emailError = null,
 }) {
   try {
     const record = {
@@ -38,8 +36,6 @@ export async function saveSubmission({
       submission_id: submissionId || null,
       ip: ip || '',
       status: 'new',
-      email_sent: !!emailSent,
-      email_error: emailError || null,
     }
 
     const { data, error } = await supabase.from('form_submissions').insert([record])

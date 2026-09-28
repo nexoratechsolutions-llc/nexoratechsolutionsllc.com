@@ -4,7 +4,7 @@ import { apiDev } from './vite-plugins/api-dev.js'
 
 export default defineConfig(({ command, mode, isSsrBuild }) => {
   // Make every .env key (not just VITE_*) available to the /api functions run
-  // by apiDev — GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO. These never reach
+  // by apiDev — SUPABASE_*, TURNSTILE_SECRET_KEY, FORM_TOKEN_SECRET. These never reach
   // the browser bundle: only VITE_-prefixed keys are exposed to client code.
   // A real environment variable always wins over the file.
   const env = loadEnv(mode, process.cwd(), '')

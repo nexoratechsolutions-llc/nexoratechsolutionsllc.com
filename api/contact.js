@@ -1,17 +1,17 @@
 /**
- * POST /api/contact — sends a contact-form submission to the company inbox.
+ * POST /api/contact — saves a contact-form submission to the database
+ * (Supabase public.form_submissions), where the admin dashboard reads it.
+ * No email is sent.
  *
  * Runs as a Vercel serverless function in production, and in-process under
  * `npm run dev` / `npm run preview` via vite-plugins/api-dev.js.
  *
  * Server-only configuration (never in client code):
- *   GMAIL_USER            the Gmail account that sends
- *   GMAIL_APP_PASSWORD    its 16-character app password
- *   CONTACT_TO            inbox that receives submissions (default below)
+ *   SUPABASE_URL, SUPABASE_ANON_KEY  database connection (see _lib/supabase.js)
  *   TURNSTILE_SECRET_KEY  Cloudflare Turnstile secret; required on Vercel
  *   FORM_TOKEN_SECRET     signs the anti-CSRF form token; required on Vercel
  *   ALLOWED_ORIGINS       extra origins allowed to call the API (see _lib/security.js)
- *   CONTACT_DRY_RUN=1     local testing only: run everything except the send
+ *   CONTACT_DRY_RUN=1     local testing only: run everything except the database write
  *
  * Defences, cheapest first:
  *   1. origin check: same-site, or listed in ALLOWED_ORIGINS (with CORS)
@@ -21,22 +21,17 @@
  *       not used before, and issued at least 3 s ago (server-trusted fill time)
  *   4. field validation
  *   5. duplicate detection: the same submissionId, or the same email+message,
- *      is acknowledged again without sending a second email
- *   6. send limits per IP and per sender email
+ *      is acknowledged again without saving a second row
+ *   6. submission limits per IP and per sender email
  *   7. Cloudflare Turnstile verification
- *
- * The recipient is fixed server-side and the visitor's address is only ever
- * used as Reply-To, so this endpoint cannot be used to send mail anywhere else.
  *
  * Limits and duplicate memory are per server instance (they reset on a cold
  * start). Turnstile is the hard gate; the limits are a brake on top of it.
  */
 import { createHash } from 'node:crypto'
-import nodemailer from 'nodemailer'
 import { applyCors, checkOrigin, formTokenSecret, handlePreflight, verifyFormToken, FORM_TOKEN_TTL_MS } from './_lib/security.js'
 import { saveSubmission } from './_lib/supabase.js'
 
-const DEFAULT_TO = 'minchu@nexoratechsolutionsllc.com'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const TURNSTILE_ACTION = 'contact'
 
@@ -102,8 +97,6 @@ async function readJson(req) {
 
 const clean = (v, max) => String(v ?? '').replace(/\u0000/g, '').trim().slice(0, max)
 const oneLine = (v) => v.replace(/[\r\n]+/g, ' ')
-const escapeHtml = (s) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 const contentKey = (email, message) =>
   'h:' + createHash('sha256').update(`${email.toLowerCase()}\n${message.replace(/\s+/g, ' ').toLowerCase()}`).digest('hex')
 
@@ -187,7 +180,7 @@ export default async function handler(req, res) {
     secret = formTokenSecret()
   } catch (err) {
     console.error('[contact]', err.message)
-    return send(res, 500, { ok: false, error: 'The form is not fully configured yet. Please email or call us.' })
+    return send(res, 500, { ok: false, error: 'The form is not fully configured yet. Please try again later.' })
   }
   let tokenNonce = null
   if (secret) {
@@ -235,7 +228,7 @@ export default async function handler(req, res) {
   }
   // The same submission arriving twice at once (double-click, retry race).
   if ((idKey && inFlight.has(idKey)) || inFlight.has(hashKey)) {
-    return send(res, 409, { ok: false, code: 'in_progress', error: 'This message is already being sent.' })
+    return send(res, 409, { ok: false, code: 'in_progress', error: 'This message is already being saved.' })
   }
   const lockKeys = [hashKey, idKey].filter(Boolean)
   lockKeys.forEach((k) => inFlight.add(k))
@@ -246,9 +239,9 @@ export default async function handler(req, res) {
   }
 }
 
-/** Steps 5–7: send limits, Turnstile, then the email itself. */
+/** Steps 5–7: submission limits, Turnstile, then the database write. */
 async function deliver(res, { now, ip, data, body, idKey, hashKey, tokenNonce }) {
-  // 5. Send limits — per visitor and per sender address.
+  // 5. Submission limits — per visitor and per sender address.
   const emailKey = `email:${data.email.toLowerCase()}`
   const sendWait = Math.max(
     retryAfter(`send:${ip}`, LIMITS.sendsPerIp, now),
@@ -259,7 +252,7 @@ async function deliver(res, { now, ip, data, body, idKey, hashKey, tokenNonce })
     return tooMany(
       res,
       sendWait,
-      "You've sent several messages recently. Please wait a little before sending another, or call us directly."
+      "You've sent several messages recently. Please wait a little before sending another."
     )
   }
 
@@ -268,7 +261,7 @@ async function deliver(res, { now, ip, data, body, idKey, hashKey, tokenNonce })
   if (!human.ok) {
     if (human.config) {
       console.error('[contact] TURNSTILE_SECRET_KEY is not set on the server')
-      return send(res, 500, { ok: false, error: 'The form is not fully configured yet. Please email or call us.' })
+      return send(res, 500, { ok: false, error: 'The form is not fully configured yet. Please try again later.' })
     }
     return send(res, 403, {
       ok: false,
@@ -279,72 +272,12 @@ async function deliver(res, { now, ip, data, body, idKey, hashKey, tokenNonce })
     })
   }
 
-  // 7. Send.
+  // 7. Save to the database. The visitor only sees success once the row is stored.
   const dryRun = process.env.CONTACT_DRY_RUN === '1' && !process.env.VERCEL
-  const user = process.env.GMAIL_USER
-  const pass = process.env.GMAIL_APP_PASSWORD
-  if (!dryRun && (!user || !pass)) {
-    console.error('[contact] GMAIL_USER / GMAIL_APP_PASSWORD are not set')
-    return send(res, 500, { ok: false, error: 'Email is not configured on the server yet.' })
-  }
-
-  const rows = [
-    ['Name', data.name],
-    ['Email', data.email],
-    ['Phone', data.phone || '—'],
-    ['Topic', data.topic || '—'],
-    ['Form', data.form],
-    ['Page', data.page || '—'],
-  ]
-  const text = `${data.message}\n\n—\n${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n`
-  const html = `
-    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1B1912;line-height:1.55">
-      <h2 style="margin:0 0 12px;font-size:18px">${escapeHtml(data.form)}</h2>
-      <table cellpadding="6" style="border-collapse:collapse;margin-bottom:16px">
-        ${rows
-          .map(
-            ([k, v]) =>
-              `<tr><td style="color:#6B6558;padding-right:14px">${k}</td><td><strong>${escapeHtml(v)}</strong></td></tr>`
-          )
-          .join('')}
-      </table>
-      <div style="white-space:pre-wrap;border-left:3px solid #B5602A;padding:4px 0 4px 14px">${escapeHtml(data.message)}</div>
-      <p style="color:#948C79;font-size:12px;margin-top:20px">Sent from the contact form on the Nexora website. Reply to this email to answer ${escapeHtml(data.name)} directly.</p>
-    </div>`
-  const mail = {
-    from: { name: 'Nexora Website', address: user || 'dry-run@localhost' },
-    to: process.env.CONTACT_TO || DEFAULT_TO,
-    replyTo: { name: data.name, address: data.email },
-    subject: `${data.form}: ${data.topic || 'New message'} — ${data.name}`,
-    text,
-    html,
-  }
-
-  let emailSent = false
-  let emailError = null
-
-  try {
-    if (dryRun) {
-      console.log(`[contact] DRY RUN — would send "${mail.subject}" to ${mail.to}`)
-      emailSent = true
-    } else {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: { user, pass },
-      })
-      await transporter.sendMail(mail)
-      emailSent = true
-    }
-  } catch (err) {
-    console.error('[contact] send failed:', err?.message || err)
-    emailError = err?.message || 'SMTP send failed'
-  }
-
-  // Always save submission to Supabase database
-  try {
-    await saveSubmission({
+  if (dryRun) {
+    console.log(`[contact] DRY RUN — would save "${data.form}: ${data.topic || 'New message'}" from ${data.name}`)
+  } else {
+    const saved = await saveSubmission({
       name: data.name,
       email: data.email,
       phone: data.phone,
@@ -352,20 +285,19 @@ async function deliver(res, { now, ip, data, body, idKey, hashKey, tokenNonce })
       form: data.form,
       page: data.page,
       message: data.message,
-      submissionId: body.submissionId,
+      submissionId: idKey ? idKey.slice(3) : null,
       ip,
-      emailSent,
-      emailError,
     })
-  } catch (dbErr) {
-    console.error('[contact] Supabase save failed:', dbErr?.message || dbErr)
+    if (!saved.ok) {
+      console.error('[contact] database save failed:', saved.error)
+      return send(res, 502, {
+        ok: false,
+        error: "We couldn't save your message just now. Please try again in a moment.",
+      })
+    }
   }
 
-  if (!emailSent && !dryRun) {
-    return send(res, 502, { ok: false, error: "We couldn't deliver your email immediately, but your message has been saved into our system and our team will get back to you shortly." })
-  }
-
-  // Remember it only once it has really gone. The form token is now spent.
+  // Remember it only once it is really saved. The form token is now spent.
   if (tokenNonce) usedTokens.set(tokenNonce, now)
   if (idKey) seen.set(idKey, now)
   seen.set(hashKey, now)

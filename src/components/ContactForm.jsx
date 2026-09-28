@@ -21,14 +21,6 @@ function validate(v) {
   return e
 }
 
-/** Pre-filled mailto link, offered as a fallback if sending fails. */
-function mailtoFor(values, subjectPrefix) {
-  const subject = `${subjectPrefix}: ${values.topic} — ${values.name.trim()}`
-  const body = `${values.message.trim()}\n\n—\nName: ${values.name.trim()}\nEmail: ${values.email.trim()}${
-    values.phone.trim() ? `\nPhone: ${values.phone.trim()}` : ''
-  }\nTopic: ${values.topic}`
-  return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-}
 
 /** 45 → "45s", 3516 → "58m 36s". */
 const formatWait = (s) => (s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`)
@@ -91,8 +83,7 @@ export default function ContactForm({ topics, subjectPrefix, messageLabel = 'How
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | sending | error
   const [serverError, setServerError] = useState('')
-  const [offerFallback, setOfferFallback] = useState(true) // show the email-app / phone fallback
-  const [lastMailto, setLastMailto] = useState('')
+  const [offerFallback, setOfferFallback] = useState(true) // show the "call us" fallback
   const [sent, setSent] = useState(null) // { name, email, topic, duplicate } once delivered
   const [cardHeight, setCardHeight] = useState(0)
   const [token, setToken] = useState(null)
@@ -216,7 +207,6 @@ export default function ContactForm({ topics, subjectPrefix, messageLabel = 'How
     setStatus('sending')
     setServerError('')
     setTsError('')
-    setLastMailto(mailtoFor(values, subjectPrefix))
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), 20000)
     let consumedToken = false
@@ -316,8 +306,7 @@ export default function ContactForm({ topics, subjectPrefix, messageLabel = 'How
           )}
         </p>
         <p className="success-help">
-          Need us sooner? Call <a href={SITE.phoneHref}>{SITE.phone}</a> or email{' '}
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+          Need us sooner? Call <a href={SITE.phoneHref}>{SITE.phone}</a>.
         </p>
         <button type="button" className="btn btn-ghost" onClick={startOver} disabled={blocked}>
           {blocked ? (
@@ -376,7 +365,7 @@ export default function ContactForm({ topics, subjectPrefix, messageLabel = 'How
               onError={(code) =>
                 setTsError(
                   code === 'load'
-                    ? "The security check couldn't load. Check your connection, or email us directly."
+                    ? "The security check couldn't load. Check your connection, or call us directly."
                     : 'The security check hit a problem. It will retry automatically — or refresh the page.'
                 )
               }
@@ -432,8 +421,7 @@ export default function ContactForm({ topics, subjectPrefix, messageLabel = 'How
             {offerFallback && (
               <>
                 {' '}
-                <a href={lastMailto}>Send it from your email app instead</a> or call{' '}
-                <a href={SITE.phoneHref}>{SITE.phone}</a>.
+                Or call us on <a href={SITE.phoneHref}>{SITE.phone}</a>.
               </>
             )}
           </p>

@@ -14,7 +14,6 @@ async function seed() {
       message: 'Hello Nexora team, I am an IMG preparing for USMLE Step 1 with a target exam date in 5 months. I would like to schedule a diagnostic session and enroll in 1-on-1 mentorship.',
       submissionId: 'sample-med-001',
       ip: '198.51.100.12',
-      emailSent: true,
     },
     {
       name: 'Marcus Vance',
@@ -26,7 +25,6 @@ async function seed() {
       message: 'We are seeking an engineering partner to architect an automated dispatch routing system with AI predictive arrival times. We have detailed RFPs ready for review.',
       submissionId: 'sample-tech-002',
       ip: '203.0.113.45',
-      emailSent: true,
     },
     {
       name: 'Elena Rostova',
@@ -38,7 +36,6 @@ async function seed() {
       message: 'I am interested in enrolling in the Junior Scientist Program to gain first-author peer-reviewed publication credentials for the upcoming NRMP Match cycle.',
       submissionId: 'sample-med-003',
       ip: '198.51.100.89',
-      emailSent: true,
     },
     {
       name: 'David Chen',
@@ -50,7 +47,6 @@ async function seed() {
       message: 'We would like to explore your HIPAA-compliant LLM fine-tuning and agentic workflow consulting for clinical decision support note parsing.',
       submissionId: 'sample-tech-004',
       ip: '192.0.2.14',
-      emailSent: true,
     },
   ]
 
