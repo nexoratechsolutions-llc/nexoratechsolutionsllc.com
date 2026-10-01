@@ -29,8 +29,9 @@ if (!SEO_BLOCK.test(template) || !template.includes(ROOT_DIV) || !template.inclu
 
 function page(route, urlPath, appHtml) {
   let html = template.replace(SEO_BLOCK, ssr.buildHeadTags(route))
-  if (ssr.practiceFor(urlPath) === 'medical') {
-    html = html.replace(HTML_OPEN, '<html lang="en" data-view="medical">')
+  const view = ssr.practiceFor(urlPath)
+  if (view) {
+    html = html.replace(HTML_OPEN, `<html lang="en" data-view="${view}">`)
   }
   return html.replace(ROOT_DIV, `<div id="root" data-route="${urlPath}">${appHtml}</div>`)
 }

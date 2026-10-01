@@ -106,6 +106,19 @@ export const PRACTICES = {
   },
 }
 
+/** Landing page ("One company. Two services.") — in-page sections. */
+export const HOME = {
+  key: 'home',
+  name: 'Nexora TechSolutions',
+  nav: [
+    { href: '#services-home', label: 'Our services' },
+    { href: '#numbers', label: 'At a glance' },
+    { href: '#delivery', label: 'How we deliver' },
+    { href: '#why-home', label: 'Why Nexora' },
+  ],
+  cta: { href: '#contact-home', label: 'Contact us' },
+}
+
 /** Which practice a path belongs to, or null for the gateway and 404. */
 export function practiceFor(pathname) {
   if (pathname === '/technical' || pathname.startsWith('/technical/')) return 'technical'

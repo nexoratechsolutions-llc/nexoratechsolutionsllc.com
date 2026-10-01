@@ -3,7 +3,7 @@
  *
  * 1. Applies the theme, so there is no flash of the wrong one. A visitor's
  *    saved choice wins; otherwise the operating-system setting is used.
- * 2. Marks medical pages so the boot loader and site tokens lead with green.
+ * 2. Marks the service (technical / medical) so the accent colour is right from the first frame.
  * 3. Promotes the web-font stylesheet from media="print" to media="all" once
  *    it has loaded. Declaring it as print keeps it off the critical path, so a
  *    slow or unreachable fonts.googleapis.com cannot stop the page painting.
@@ -29,9 +29,10 @@
   root.classList.add('booting')
 
   var meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#130F1E' : '#F5F3F8')
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0F1A' : '#F8FAFD')
 
-  if (location.pathname.indexOf('/medical') === 0) root.setAttribute('data-view', 'medical')
+  var view = location.pathname.match(/^\/(technical|medical)(\/|$)/)
+  if (view) root.setAttribute('data-view', view[1])
 
   var fonts = document.getElementById('gfonts')
   if (!fonts) return

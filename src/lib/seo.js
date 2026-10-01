@@ -59,7 +59,7 @@ export const ROUTES = [
     changefreq: 'monthly',
     title: 'Nexora TechSolutions LLC | Technology & Medical Education',
     description:
-      'Two practices, one standard of delivery: software, AI, QA, DevOps and SAFe® training for businesses, plus USMLE coaching, research and Match support for IMGs.',
+      'One company, two services: software, AI, QA, DevOps and SAFe® training for businesses, plus USMLE coaching, research and residency Match support for IMGs.',
   },
 
   /* ---------------- Technical ---------------- */

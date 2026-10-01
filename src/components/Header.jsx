@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import BrandMark from './BrandMark'
 import ThemeToggle from './ThemeToggle'
 import { ArrowRight } from './Icons'
-import { PRACTICES } from '../data/site'
+import { HOME, PRACTICES } from '../data/site'
 
 const DESKTOP_QUERY = '(min-width: 1181px)'
 
@@ -43,6 +43,20 @@ export default function Header({ practice }) {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
+  // Landing page and 404 show the landing sections; a service shows its own pages.
+  const links = p
+    ? p.nav.map((item) => (
+        <NavLink key={item.to} className="nav-link" to={item.to}>
+          {item.label}
+        </NavLink>
+      ))
+    : HOME.nav.map((item) => (
+        <Link key={item.href} className="nav-link" to={`/${item.href}`}>
+          {item.label}
+        </Link>
+      ))
+  const cta = p ? { to: p.cta.to, label: p.cta.label } : { to: `/${HOME.cta.href}`, label: HOME.cta.label }
+
   return (
     <header className="site-header" data-scrolled={scrolled} data-practice={practice || 'none'}>
       <div className="wrap nav">
@@ -53,44 +67,36 @@ export default function Header({ practice }) {
               Nex<b>ora</b>
             </span>
           </Link>
-          {p && (
-            <nav className="practice-switch" aria-label="Practice">
-              <NavLink to="/technical">Technical</NavLink>
-              <NavLink to="/medical">Medical</NavLink>
-            </nav>
-          )}
+          <nav className="practice-switch" aria-label="Nexora services">
+            <NavLink to="/technical">
+              <span className="n">1</span>Technical
+            </NavLink>
+            <NavLink to="/medical">
+              <span className="n">2</span>Medical
+            </NavLink>
+          </nav>
         </div>
 
-        {p && (
-          <>
-            <nav id="site-nav" className="links" aria-label={`${p.name} sections`} data-open={open}>
-              {p.nav.map((item) => (
-                <NavLink key={item.to} className="nav-link" to={item.to}>
-                  {item.label}
-                </NavLink>
-              ))}
-              <Link className="btn btn-primary nav-cta" to={p.cta.to}>
-                {p.cta.label} <ArrowRight size={16} className="arrow" />
-              </Link>
-            </nav>
-            <div className="nav-backdrop" data-open={open} onClick={() => setOpen(false)} aria-hidden="true" />
-          </>
-        )}
+        <nav id="site-nav" className="links" aria-label={`${p ? p.name : HOME.name} sections`} data-open={open}>
+          {links}
+          <Link className="btn btn-primary nav-cta" to={cta.to}>
+            {cta.label} <ArrowRight size={16} className="arrow" />
+          </Link>
+        </nav>
+        <div className="nav-backdrop" data-open={open} onClick={() => setOpen(false)} aria-hidden="true" />
 
         <div className="nav-right">
           <ThemeToggle />
-          {p && (
-            <button
-              type="button"
-              className="icon-btn burger"
-              aria-expanded={open}
-              aria-controls="site-nav"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-              onClick={() => setOpen((o) => !o)}
-            >
-              <i />
-            </button>
-          )}
+          <button
+            type="button"
+            className="icon-btn burger"
+            aria-expanded={open}
+            aria-controls="site-nav"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <i />
+          </button>
         </div>
       </div>
       <div className="scroll-progress" aria-hidden="true" />

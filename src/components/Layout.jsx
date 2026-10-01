@@ -2,6 +2,8 @@ import { Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
+import UtilityBar from './UtilityBar'
+import BackToTop from './BackToTop'
 import PageLoader from './PageLoader'
 import ErrorBoundary from './ErrorBoundary'
 import { practiceFor } from '../data/site'
@@ -50,10 +52,10 @@ export default function Layout() {
 
   useRouteMeta(pathname)
 
-  // Medical pages swap the accent to green — before paint, so there is no flash.
+  // Each service re-tints the accent (Technical blue, Medical teal) — before paint, so there is no flash.
   useIsoLayoutEffect(() => {
     const root = document.documentElement
-    if (practice === 'medical') root.setAttribute('data-view', 'medical')
+    if (practice) root.setAttribute('data-view', practice)
     else root.removeAttribute('data-view')
   }, [practice])
 
@@ -62,6 +64,7 @@ export default function Layout() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      <UtilityBar />
       <Header practice={practice} />
       <RouteChangeEffects />
       <main id="main" tabIndex={-1}>
@@ -74,6 +77,7 @@ export default function Layout() {
         </div>
       </main>
       <Footer practice={practice} />
+      <BackToTop />
     </>
   )
 }

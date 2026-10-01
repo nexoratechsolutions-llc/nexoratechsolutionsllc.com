@@ -82,11 +82,6 @@ export default function AdminLogin({ onLoginSuccess }) {
     }
   }
 
-  const fillDefaultCredentials = () => {
-    setEmail('admin@nexoratechsolutionsllc.com')
-    setPassword('AdminPassword123!@#')
-    setError('')
-  }
 
   return (
     <div className="admin-login-wrapper">
@@ -222,13 +217,6 @@ export default function AdminLogin({ onLoginSuccess }) {
           </button>
         </form>
 
-        <div className="admin-login-hint">
-          <div><strong>Configured Admin Credentials:</strong></div>
-          <div>Email: <code>admin@nexoratechsolutionsllc.com</code></div>
-          <button type="button" className="admin-quick-fill-btn" onClick={fillDefaultCredentials}>
-            Click to auto-fill credentials
-          </button>
-        </div>
       </div>
     </div>
   )

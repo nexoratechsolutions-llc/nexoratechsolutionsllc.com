@@ -1,88 +1,115 @@
 /* ===========================================================================
-   Nexora design tokens — Bold Modern redesign
-   Palette: Saffron #F8C662 · Ultra Violet #595082 · Dark Purple #2C263F
-            Hunter Green #41644A · Dark Green #213722
+   Nexora design tokens — Blueprint redesign (nexora-website (7).html)
+   Corporate IT-services look: light content bands, blue→teal "blueprint"
+   bands for heroes / AI / CTA / footer, royal blue for Technical, teal for
+   Medical, indigo on the landing page, amber as the shared highlight.
    =========================================================================== */
 :root{
-  /* ── Backgrounds ─────────────────────────────────────────────── */
-  --bg:#FAFAFA;
-  --bg-deep:#F0EDF8;
+  /* ── Surfaces ── */
+  --bg:#F8FAFD;
+  --bg-deep:#EEF3FA;
   --surface:#FFFFFF;
-  --surface-alt:#F4F1FB;
+  --surface-alt:#E9EFF9;
   --surface-raised:#FFFFFF;
 
-  /* ── Ink ─────────────────────────────────────────────────────── */
-  --ink:#0F0D1A;
-  --ink-soft:#4A4562;
-  --ink-faint:#8B87A0;
+  /* ── Ink ── */
+  --ink:#101B2D;
+  --ink-soft:#46546A;
+  --ink-faint:#74829A;
 
-  /* ── Accent: Ultra Violet (Technical) ───────────────────────── */
-  --accent:#595082;
+  /* ── Service colours ── */
+  --tech:#1D5FD1;  --tech-soft:#E2EBFC;
+  --med:#0B8F80;   --med-soft:#DAF3EF;
+  --warm:#E8962E;  --warm-soft:#FCEBD3;
+
+  /* ── Accent: indigo on the landing page; re-tinted per service below ── */
+  --accent:#2F45B5;
   --accent-ink:#FFFFFF;
-  --accent-soft:#E8E5F4;
-  --accent-mid:#7B74AA;
-  --accent-glow:rgba(89,80,130,.22);
+  --accent-soft:#E4E8FA;
+  --accent-mid:#5A6CD0;
+  --accent-glow:rgba(47,69,181,.22);
+  --accent2:#0B8F80;
+  --accent2-soft:#DAF3EF;
+  --accent2-glow:rgba(11,143,128,.18);
+  /* The page-level accent, readable inside bands that re-map --accent */
+  --view-accent:#2F45B5;
+  --view-accent2:#0B8F80;
 
-  /* ── Accent2: Hunter Green (Medical) ────────────────────────── */
-  --accent2:#41644A;
-  --accent2-soft:#D8EAE0;
-  --accent2-glow:rgba(65,100,74,.18);
+  /* ── Amber highlight ── */
+  --highlight:#E8962E;
+  --highlight-deep:#C9770F;
+  --highlight-ink:#1E1405;
 
-  /* ── Saffron highlight ───────────────────────────────────────── */
-  --highlight:#F8C662;
-  --highlight-deep:#F0A830;
-  --highlight-ink:#1E1A08;
+  /* ── Lines ── */
+  --line:#DCE4EF;
+  --line-strong:#C5D1E2;
 
-  /* ── Borders ─────────────────────────────────────────────────── */
-  --line:#E2DCF0;
-  --line-strong:#C8C0E0;
+  /* Content colours that bands never re-map (for light cards sitting on a band) */
+  --c-ink:#101B2D;
+  --c-ink-soft:#46546A;
+  --c-surface:#FFFFFF;
+  --c-line:#DCE4EF;
 
-  /* ── Semantic ────────────────────────────────────────────────── */
-  --danger:#C0304A;
-  --success:#41644A;
+  /* ── Semantic ── */
+  --danger:#C23A3A;
+  --success:#0B8F80;
 
-  /* ── Shadows (stronger, more dramatic) ──────────────────────── */
-  --shadow:0 2px 4px rgba(89,80,130,.06), 0 12px 32px -8px rgba(89,80,130,.18);
-  --shadow-md:0 4px 8px rgba(89,80,130,.08), 0 20px 48px -12px rgba(89,80,130,.24);
-  --shadow-lg:0 8px 16px rgba(89,80,130,.1), 0 40px 80px -20px rgba(89,80,130,.32);
-  --shadow-glow:0 0 0 1px var(--accent-glow), 0 8px 32px -4px var(--accent-glow);
+  /* ── Shadows ── */
+  --shadow:0 1px 2px rgba(16,27,45,.05),0 16px 36px -18px rgba(29,60,120,.28);
+  --shadow-md:0 2px 4px rgba(16,27,45,.06),0 22px 48px -20px rgba(29,60,120,.32);
+  --shadow-lg:0 4px 10px rgba(16,27,45,.07),0 36px 72px -28px rgba(29,60,120,.38);
+  --shadow-glow:0 0 0 1px var(--accent-glow),0 8px 32px -4px var(--accent-glow);
 
-  /* ── Gradients ───────────────────────────────────────────────── */
-  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(89,80,130,.18) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(65,100,74,.14) 0%, transparent 55%),
-              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.12) 0%, transparent 50%);
-  --grad-accent:linear-gradient(135deg, var(--accent) 0%, #7B74AA 100%);
-  --grad-highlight:linear-gradient(135deg, var(--highlight) 0%, var(--highlight-deep) 100%);
-  --grad-mesh:radial-gradient(at 20% 50%, rgba(89,80,130,.08) 0px, transparent 50%),
-              radial-gradient(at 80% 20%, rgba(248,198,98,.06) 0px, transparent 50%),
-              radial-gradient(at 50% 90%, rgba(65,100,74,.07) 0px, transparent 50%);
+  /* ── Gradients ── */
+  --grad-accent:linear-gradient(135deg,var(--accent) 0%,color-mix(in srgb,var(--accent) 78%,var(--accent2)) 100%);
+  --grad-highlight:linear-gradient(135deg,#F2A93F 0%,#E0841C 100%);
+  --grad-hero:none;
+  --grad-mesh:none;
 
-  /* ── Always-dark panel ──────────────────────────────────────── */
-  --panel:#100D1C;
-  --panel-surface:#1A1630;
-  --panel-card:rgba(255,255,255,.055);
-  --panel-card-hover:rgba(255,255,255,.085);
-  --panel-line:rgba(255,255,255,.10);
-  --panel-line-strong:rgba(255,255,255,.18);
-  --panel-ink:#F0EBF8;
-  --panel-ink-soft:#B8B0D0;
-  --panel-ink-faint:#7A7595;
+  /* ── Blueprint bands (heroes, AI section, footer) ── */
+  --band-1:#2447A8;
+  --band-2:#12808A;
+  --band-ink:#FFFFFF;
+  --band-soft:#DCE6F7;
+  --band-faint:#B9C8E6;
+  --band-line:rgba(255,255,255,.14);
+  --band-line-strong:rgba(255,255,255,.30);
+  --band-card:rgba(255,255,255,.10);
+  --band-card-hover:rgba(255,255,255,.16);
+  --band-hi:#9FF0E2;
+  --band-amber:#FFD08A;
+  --band-ring:#1E4F9A;
+  --band-grid:rgba(255,255,255,.10);
+  --grad-band:
+    radial-gradient(45% 60% at 90% 8%,rgba(29,95,209,.35),transparent 70%),
+    radial-gradient(35% 45% at 60% 0%,rgba(232,150,46,.18),transparent 70%),
+    radial-gradient(50% 60% at 4% 100%,rgba(11,143,128,.30),transparent 70%),
+    linear-gradient(120deg,var(--band-1),var(--band-2));
 
-  /* ── Geometry ────────────────────────────────────────────────── */
-  --radius-s:6px;
+  /* Legacy panel names, mapped onto the band */
+  --panel:var(--band-1);
+  --panel-surface:var(--band-ring);
+  --panel-card:var(--band-card);
+  --panel-card-hover:var(--band-card-hover);
+  --panel-line:var(--band-line);
+  --panel-line-strong:var(--band-line-strong);
+  --panel-ink:var(--band-ink);
+  --panel-ink-soft:var(--band-soft);
+  --panel-ink-faint:var(--band-faint);
+
+  /* ── Geometry ── */
+  --radius-s:8px;
   --radius-m:14px;
   --radius-l:22px;
-  --radius-xl:32px;
+  --radius-xl:28px;
 
-  /* ── Typography ─────────────────────────────────────────────── */
-  --font-display:'DM Serif Display', Georgia, 'Times New Roman', serif;
-  --font-body:'Plus Jakarta Sans', -apple-system, 'Segoe UI', sans-serif;
-  --font-mono:'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, monospace;
+  /* ── Typography ── */
+  --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --font-body:'Public Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
 
-  /* ── Layout ──────────────────────────────────────────────────── */
-  --nav-h:72px;
-
-  /* ── Easing ──────────────────────────────────────────────────── */
+  /* ── Layout & easing ── */
+  --nav-h:68px;
   --ease-out:cubic-bezier(.22,1,.36,1);
   --ease-soft:cubic-bezier(.4,0,.2,1);
   --ease-spring:cubic-bezier(.34,1.56,.64,1);
@@ -90,92 +117,104 @@
   color-scheme:light;
 }
 
-/* ── Dark theme ─────────────────────────────────────────────────── */
+/* ── Dark theme ── */
 :root[data-theme="dark"]{
-  --bg:#0A0812;
-  --bg-deep:#060410;
-  --surface:#120F20;
-  --surface-alt:#1A1730;
-  --surface-raised:#201C36;
-  --ink:#EEE9FF;
-  --ink-soft:#A9A3C4;
-  --ink-faint:#6B6585;
-  --accent:#8F87CB;
-  --accent-ink:#0A0714;
-  --accent-soft:#252050;
-  --accent-mid:#7B74AA;
-  --accent-glow:rgba(143,135,203,.26);
-  --accent2:#6DB87E;
-  --accent2-soft:#142B1B;
-  --accent2-glow:rgba(109,184,126,.20);
-  --highlight:#F8C662;
-  --highlight-deep:#F0A830;
-  --highlight-ink:#1E1A08;
-  --line:#231E3A;
-  --line-strong:#342E52;
-  --danger:#E06080;
-  --success:#6DB87E;
-  --shadow:0 2px 4px rgba(0,0,0,.4), 0 12px 32px -8px rgba(0,0,0,.6);
-  --shadow-md:0 4px 8px rgba(0,0,0,.5), 0 20px 48px -12px rgba(0,0,0,.7);
-  --shadow-lg:0 8px 16px rgba(0,0,0,.6), 0 40px 80px -20px rgba(0,0,0,.8);
-  --shadow-glow:0 0 0 1px var(--accent-glow), 0 8px 32px -4px var(--accent-glow);
-  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(143,135,203,.22) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(109,184,126,.14) 0%, transparent 55%),
-              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.10) 0%, transparent 50%);
-  --grad-mesh:radial-gradient(at 20% 50%, rgba(143,135,203,.12) 0px, transparent 50%),
-              radial-gradient(at 80% 20%, rgba(248,198,98,.07) 0px, transparent 50%),
-              radial-gradient(at 50% 90%, rgba(109,184,126,.08) 0px, transparent 50%);
-  --panel:#060410;
-  --panel-surface:#0E0B1E;
+  --bg:#0A0F1A;
+  --bg-deep:#070B14;
+  --surface:#111827;
+  --surface-alt:#172033;
+  --surface-raised:#111827;
+  --ink:#E9EEF6;
+  --ink-soft:#A5B1C4;
+  --ink-faint:#6E7B90;
+  --tech:#78A2F2;  --tech-soft:#172A4A;
+  --med:#44C9B7;   --med-soft:#10302D;
+  --warm:#F4B45E;  --warm-soft:#3A2A14;
+  --accent:#95A6F2;
+  --accent-ink:#0A0F1A;
+  --accent-soft:#1D2548;
+  --accent-mid:#7C8EE6;
+  --accent-glow:rgba(149,166,242,.24);
+  --accent2:#44C9B7;
+  --accent2-soft:#10302D;
+  --accent2-glow:rgba(68,201,183,.2);
+  --view-accent:#95A6F2;
+  --view-accent2:#44C9B7;
+  --highlight:#F4B45E;
+  --highlight-deep:#E89A35;
+  --highlight-ink:#1E1405;
+  --line:#243049;
+  --line-strong:#33415E;
+  --c-ink:#E9EEF6;
+  --c-ink-soft:#A5B1C4;
+  --c-surface:#111827;
+  --c-line:#243049;
+  --danger:#F07A7A;
+  --success:#44C9B7;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 34px -18px rgba(0,0,0,.7);
+  --shadow-md:0 2px 6px rgba(0,0,0,.45),0 22px 48px -20px rgba(0,0,0,.75);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 36px 72px -28px rgba(0,0,0,.8);
+  --band-1:#0D1526;
+  --band-2:#0A0F1A;
+  --band-ink:#E9EEF6;
+  --band-soft:#A5B1C4;
+  --band-faint:#6E7B90;
+  --band-line:rgba(233,238,246,.08);
+  --band-line-strong:rgba(233,238,246,.18);
+  --band-card:rgba(233,238,246,.05);
+  --band-card-hover:rgba(233,238,246,.09);
+  --band-hi:#7FE3D2;
+  --band-amber:#F4B45E;
+  --band-ring:#121C30;
+  --band-grid:rgba(233,238,246,.06);
+  --grad-band:
+    radial-gradient(45% 60% at 90% 8%,rgba(120,162,242,.16),transparent 70%),
+    radial-gradient(35% 45% at 60% 0%,rgba(244,180,94,.08),transparent 70%),
+    radial-gradient(50% 60% at 4% 100%,rgba(68,201,183,.12),transparent 70%),
+    linear-gradient(180deg,var(--band-1),var(--band-2));
   color-scheme:dark;
 }
 
-/* ── Medical re-tint: green leads ───────────────────────────────── */
-:root[data-view="medical"]:not([data-theme="dark"]){
-  --accent:#41644A;
-  --accent-soft:#D8EAE0;
-  --accent-ink:#F0FAF4;
-  --accent-mid:#5C8E6A;
-  --accent-glow:rgba(65,100,74,.20);
-  --accent2:#595082;
-  --accent2-soft:#E8E5F4;
-  --accent2-glow:rgba(89,80,130,.16);
-  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(65,100,74,.18) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(89,80,130,.12) 0%, transparent 55%),
-              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.10) 0%, transparent 50%);
+/* ── Service 1: Technical — royal blue leads ── */
+:root[data-view="technical"]{
+  --accent:var(--tech);--accent-soft:var(--tech-soft);--accent-mid:#4A7EDB;--accent-glow:rgba(29,95,209,.22);
+  --accent2:var(--med);--accent2-soft:var(--med-soft);--accent2-glow:rgba(11,143,128,.18);
+  --view-accent:#1D5FD1;--view-accent2:#0B8F80;
 }
-:root[data-view="medical"][data-theme="dark"]{
-  --accent:#6DB87E;
-  --accent-soft:#142B1B;
-  --accent-ink:#071008;
-  --accent-mid:#5CA06C;
-  --accent-glow:rgba(109,184,126,.24);
-  --accent2:#8F87CB;
-  --accent2-soft:#252050;
-  --accent2-glow:rgba(143,135,203,.18);
+:root[data-view="technical"][data-theme="dark"]{
+  --accent-mid:#8FB3F5;--accent-glow:rgba(120,162,242,.24);--accent2-glow:rgba(68,201,183,.2);
+  --view-accent:#78A2F2;--view-accent2:#44C9B7;
 }
 
-/* ── Always-dark band overrides ─────────────────────────────────── */
-.dark-panel{
-  --accent:#8F87CB;
-  --accent-ink:#0A0714;
-  --accent-soft:rgba(143,135,203,.16);
-  --accent-glow:rgba(143,135,203,.24);
-  --accent2:#6DB87E;
-  --accent2-glow:rgba(109,184,126,.20);
-  --highlight:#F8C662;
-  --ink:var(--panel-ink);
-  --ink-soft:var(--panel-ink-soft);
-  --ink-faint:var(--panel-ink-faint);
-  --line:var(--panel-line);
-  --line-strong:var(--panel-line-strong);
-  --surface:var(--panel-card);
+/* ── Service 2: Medical — teal leads ── */
+:root[data-view="medical"]{
+  --accent:var(--med);--accent-soft:var(--med-soft);--accent-mid:#2FA898;--accent-glow:rgba(11,143,128,.22);
+  --accent2:var(--tech);--accent2-soft:var(--tech-soft);--accent2-glow:rgba(29,95,209,.18);
+  --view-accent:#0B8F80;--view-accent2:#1D5FD1;
 }
-:root[data-view="medical"] .dark-panel{
-  --accent:#6DB87E;
-  --accent-ink:#071008;
-  --accent-soft:rgba(109,184,126,.16);
-  --accent-glow:rgba(109,184,126,.24);
-  --accent2:#8F87CB;
-  --accent2-glow:rgba(143,135,203,.20);
+:root[data-view="medical"][data-theme="dark"]{
+  --accent-mid:#6BD6C7;--accent-glow:rgba(68,201,183,.24);--accent2-glow:rgba(120,162,242,.2);
+  --view-accent:#44C9B7;--view-accent2:#78A2F2;
+}
+
+/* ── Inside blueprint bands: white ink, mint highlight, translucent cards ── */
+.hero,.page-hero,.land-hero,.dark-panel,.site-footer,.utility{
+  --ink:var(--band-ink);
+  --ink-soft:var(--band-soft);
+  --ink-faint:var(--band-faint);
+  --line:var(--band-line);
+  --line-strong:var(--band-line-strong);
+  --surface:var(--band-card);
+  --surface-raised:var(--band-card);
+  --surface-alt:var(--band-card);
+  --accent:var(--band-hi);
+  --accent-ink:var(--band-1);
+  --accent-soft:rgba(159,240,226,.14);
+  --accent-mid:var(--band-hi);
+  --accent-glow:rgba(159,240,226,.22);
+  --accent2:var(--band-amber);
+  --accent2-soft:rgba(255,208,138,.14);
+  --accent2-glow:rgba(255,208,138,.2);
+  --grad-accent:linear-gradient(135deg,#FFFFFF,var(--band-hi));
+  color:var(--ink);
 }

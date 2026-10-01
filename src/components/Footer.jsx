@@ -15,24 +15,6 @@ function Copyright() {
 }
 
 export default function Footer({ practice }) {
-  if (!practice) {
-    return (
-      <footer className="site-footer compact">
-        <div className="wrap footer-bottom">
-          <span className="footer-legal">
-            <Copyright />
-            <span className="footer-addr">{SITE.address.oneLine}</span>
-          </span>
-          <span className="footer-direct">
-            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            <a href={SITE.phoneHref}>{SITE.phone}</a>
-            <SocialLinks size={14} className="small" />
-          </span>
-        </div>
-      </footer>
-    )
-  }
-
   const tech = PRACTICES.technical
   const med = PRACTICES.medical
 
@@ -69,7 +51,7 @@ export default function Footer({ practice }) {
 
           <div className="footer-cols">
             <nav className="footer-col" aria-label="Technical practice">
-              <h2>Technical</h2>
+              <h2 className="t">1 · Technical</h2>
               <Link to={tech.base}>Overview</Link>
               {tech.nav.map((n) => (
                 <Link key={n.to} to={n.to}>
@@ -79,7 +61,7 @@ export default function Footer({ practice }) {
               <Link to={tech.cta.to}>Contact</Link>
             </nav>
             <nav className="footer-col" aria-label="Medical practice">
-              <h2>Medical</h2>
+              <h2 className="m">2 · Medical</h2>
               <Link to={med.base}>Overview</Link>
               {med.nav.map((n) => (
                 <Link key={n.to} to={n.to}>
@@ -91,7 +73,7 @@ export default function Footer({ practice }) {
             </nav>
             <nav className="footer-col" aria-label="More">
               <h2>Nexora</h2>
-              <Link to="/">Choose a practice</Link>
+              <Link to="/">← Both services</Link>
               <Link to={practice === 'medical' ? tech.base : med.base}>
                 {practice === 'medical' ? 'Nexora TechSolutions' : 'Nexora Medical'}
               </Link>

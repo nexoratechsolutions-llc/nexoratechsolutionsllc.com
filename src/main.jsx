@@ -8,6 +8,7 @@ import './styles/base.css'
 import './styles/components.css'
 import './styles/pages.css'
 import './styles/loader.css'
+import './styles/blueprint.css'
 
 /**
  * How long the boot loader stays on screen at minimum, measured from when the
