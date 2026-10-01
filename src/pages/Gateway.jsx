@@ -14,7 +14,8 @@ const GATES = [
     kicker: 'Technical',
     title: 'Nexora TechSolutions',
     text: 'Software development, AI agents, QA automation, DevOps & cloud, delivery consulting and SAFe®-certified training.',
-    chips: ['Software', 'AI & Automation', 'QA', 'DevOps', 'Consulting', 'Training'],
+    chips: ['Software Dev', 'AI & Automation', 'QA', 'DevOps', 'Consulting', 'Training'],
+    stats: [{ n: '25+', l: 'years expertise' }, { n: '5', l: 'service lines' }],
     go: 'Enter Technical',
   },
   {
@@ -25,6 +26,7 @@ const GATES = [
     title: 'Nexora Medical',
     text: 'USMLE coaching, U.S. clinical rotations, mentored research and end-to-end residency Match support — plus a research program for high schoolers.',
     chips: ['USMLE Coaching', 'Rotations', 'Research', 'Match', 'Junior Scientist'],
+    stats: [{ n: '4', l: 'program tracks' }, { n: '25+', l: 'programs' }],
     go: 'Enter Medical',
   },
 ]
@@ -33,7 +35,6 @@ export default function Gateway() {
   const { hash } = useLocation()
   const navigate = useNavigate()
 
-  // Old single-page deep links (#technical / #medical) land on the right practice.
   useEffect(() => {
     if (hash === '#technical' || hash === '#medical') navigate(`/${hash.slice(1)}`, { replace: true })
   }, [hash, navigate])
@@ -42,9 +43,11 @@ export default function Gateway() {
     <section className="gateway">
       <HeroBackdrop />
       <div className="wrap">
+
+        {/* ── Brand mark + headline ── */}
         <div className="gate-top">
           <div className="gate-mark">
-            <BrandMark size={56} />
+            <BrandMark size={52} />
           </div>
           <p className="eyebrow">Nexora TechSolutions LLC</p>
           <h1>
@@ -53,33 +56,53 @@ export default function Gateway() {
             </WordReveal>
           </h1>
           <p className="lede">
-            Choose where you'd like to go: technology services for businesses, or medical education for international
-            medical graduates and young researchers.
+            Choose where you'd like to go: technology services for businesses, or medical education
+            for international medical graduates and young researchers.
           </p>
         </div>
 
-        <Reveal effect="flip" stagger delay={450} className="gate-grid">
+        {/* ── Gate cards ── */}
+        <Reveal effect="flip" stagger delay={420} className="gate-grid">
           {GATES.map((g) => (
             <Link key={g.key} className={`gate-card ${g.key}`} to={g.to}>
-              <span className="gate-icon">
-                <g.Icon size={26} />
-              </span>
-              <span className="gate-kicker">{g.kicker}</span>
+
+              {/* Icon + kicker */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <span className="gate-icon">
+                  <g.Icon size={24} />
+                </span>
+                <span className="gate-kicker">{g.kicker}</span>
+              </div>
+
+              {/* Title + body */}
               <h2>{g.title}</h2>
               <p>{g.text}</p>
+
+              {/* Mini stat strip */}
+              <div className="gate-stats">
+                {g.stats.map((s) => (
+                  <div key={s.l} className="gate-stat">
+                    <strong>{s.n}</strong>
+                    <span>{s.l}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Chips */}
               <span className="chip-row">
                 {g.chips.map((c) => (
-                  <span className="chip" key={c}>
-                    {c}
-                  </span>
+                  <span className="chip" key={c}>{c}</span>
                 ))}
               </span>
+
+              {/* CTA */}
               <span className="gate-go">
                 {g.go} <ArrowRight size={18} className="arrow" />
               </span>
             </Link>
           ))}
         </Reveal>
+
       </div>
     </section>
   )

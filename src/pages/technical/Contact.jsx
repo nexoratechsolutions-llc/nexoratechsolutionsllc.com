@@ -10,11 +10,7 @@ export default function Contact() {
     <>
       <PageHero
         eyebrow="Contact"
-        title={
-          <>
-            Let's transform your business <em>together</em>.
-          </>
-        }
+        title={<>Let's transform your business <em>together</em>.</>}
         lede="Tell us what you're building, fixing or scaling — a new product, a stalled delivery, a test suite nobody trusts, or an AI idea that needs grounding. We'll come back with a straight answer on how we'd approach it."
       />
 

@@ -1,114 +1,181 @@
 /* ===========================================================================
-   Nexora design tokens — light is the base, [data-theme="dark"] overrides.
-   public/theme-boot.js always sets data-theme before first paint.
+   Nexora design tokens — Bold Modern redesign
+   Palette: Saffron #F8C662 · Ultra Violet #595082 · Dark Purple #2C263F
+            Hunter Green #41644A · Dark Green #213722
    =========================================================================== */
 :root{
-  --bg:#F7F4EC;
-  --bg-deep:#F1ECE0;
+  /* ── Backgrounds ─────────────────────────────────────────────── */
+  --bg:#FAFAFA;
+  --bg-deep:#F0EDF8;
   --surface:#FFFFFF;
-  --surface-alt:#EFE9D9;
-  --ink:#1B1912;
-  --ink-soft:#645E52;
-  --ink-faint:#877F6C;
-  --accent:#B5602A;
-  --accent-ink:#FFF8F0;
-  --accent-soft:#EFD6BC;
-  --accent-glow:rgba(181,96,42,.18);
-  --accent2:#2E5C4E;
-  --accent2-soft:#D3E2DA;
-  --accent2-glow:rgba(46,92,78,.16);
-  --line:#E1D9C6;
-  --line-strong:#D2C7AD;
-  --danger:#9E3B22;
-  --success:#2E5C4E;
-  --shadow:0 1px 2px rgba(27,25,18,.04), 0 8px 24px -12px rgba(27,25,18,.15);
-  --shadow-lg:0 2px 4px rgba(27,25,18,.05), 0 24px 56px -24px rgba(27,25,18,.28);
+  --surface-alt:#F4F1FB;
+  --surface-raised:#FFFFFF;
 
-  /* Always-dark band (AI section) — same in both themes, deeper in dark. */
-  --panel:#1B1912;
-  --panel-card:rgba(255,255,255,.045);
-  --panel-line:rgba(255,255,255,.12);
-  --panel-ink:#FBF7EE;
-  --panel-ink-soft:#C8C0AC;
-  --panel-ink-faint:#9C947F;
+  /* ── Ink ─────────────────────────────────────────────────────── */
+  --ink:#0F0D1A;
+  --ink-soft:#4A4562;
+  --ink-faint:#8B87A0;
 
-  --radius-s:8px;
-  --radius-m:16px;
-  --radius-l:28px;
-  --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-body:'Work Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono:'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
-  --nav-h:68px;
+  /* ── Accent: Ultra Violet (Technical) ───────────────────────── */
+  --accent:#595082;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E8E5F4;
+  --accent-mid:#7B74AA;
+  --accent-glow:rgba(89,80,130,.22);
+
+  /* ── Accent2: Hunter Green (Medical) ────────────────────────── */
+  --accent2:#41644A;
+  --accent2-soft:#D8EAE0;
+  --accent2-glow:rgba(65,100,74,.18);
+
+  /* ── Saffron highlight ───────────────────────────────────────── */
+  --highlight:#F8C662;
+  --highlight-deep:#F0A830;
+  --highlight-ink:#1E1A08;
+
+  /* ── Borders ─────────────────────────────────────────────────── */
+  --line:#E2DCF0;
+  --line-strong:#C8C0E0;
+
+  /* ── Semantic ────────────────────────────────────────────────── */
+  --danger:#C0304A;
+  --success:#41644A;
+
+  /* ── Shadows (stronger, more dramatic) ──────────────────────── */
+  --shadow:0 2px 4px rgba(89,80,130,.06), 0 12px 32px -8px rgba(89,80,130,.18);
+  --shadow-md:0 4px 8px rgba(89,80,130,.08), 0 20px 48px -12px rgba(89,80,130,.24);
+  --shadow-lg:0 8px 16px rgba(89,80,130,.1), 0 40px 80px -20px rgba(89,80,130,.32);
+  --shadow-glow:0 0 0 1px var(--accent-glow), 0 8px 32px -4px var(--accent-glow);
+
+  /* ── Gradients ───────────────────────────────────────────────── */
+  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(89,80,130,.18) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(65,100,74,.14) 0%, transparent 55%),
+              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.12) 0%, transparent 50%);
+  --grad-accent:linear-gradient(135deg, var(--accent) 0%, #7B74AA 100%);
+  --grad-highlight:linear-gradient(135deg, var(--highlight) 0%, var(--highlight-deep) 100%);
+  --grad-mesh:radial-gradient(at 20% 50%, rgba(89,80,130,.08) 0px, transparent 50%),
+              radial-gradient(at 80% 20%, rgba(248,198,98,.06) 0px, transparent 50%),
+              radial-gradient(at 50% 90%, rgba(65,100,74,.07) 0px, transparent 50%);
+
+  /* ── Always-dark panel ──────────────────────────────────────── */
+  --panel:#100D1C;
+  --panel-surface:#1A1630;
+  --panel-card:rgba(255,255,255,.055);
+  --panel-card-hover:rgba(255,255,255,.085);
+  --panel-line:rgba(255,255,255,.10);
+  --panel-line-strong:rgba(255,255,255,.18);
+  --panel-ink:#F0EBF8;
+  --panel-ink-soft:#B8B0D0;
+  --panel-ink-faint:#7A7595;
+
+  /* ── Geometry ────────────────────────────────────────────────── */
+  --radius-s:6px;
+  --radius-m:14px;
+  --radius-l:22px;
+  --radius-xl:32px;
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  --font-display:'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --font-body:'Plus Jakarta Sans', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, monospace;
+
+  /* ── Layout ──────────────────────────────────────────────────── */
+  --nav-h:72px;
+
+  /* ── Easing ──────────────────────────────────────────────────── */
   --ease-out:cubic-bezier(.22,1,.36,1);
   --ease-soft:cubic-bezier(.4,0,.2,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+
   color-scheme:light;
 }
 
+/* ── Dark theme ─────────────────────────────────────────────────── */
 :root[data-theme="dark"]{
-  --bg:#141109;
-  --bg-deep:#0E0C07;
-  --surface:#1C1810;
-  --surface-alt:#211B12;
-  --ink:#F3EEE1;
-  --ink-soft:#B9AF97;
-  --ink-faint:#8A806A;
-  --accent:#E39352;
-  --accent-ink:#241505;
-  --accent-soft:#4A3018;
-  --accent-glow:rgba(227,147,82,.2);
-  --accent2:#74B39B;
-  --accent2-soft:#1D2E26;
-  --accent2-glow:rgba(116,179,155,.16);
-  --line:#332B1B;
-  --line-strong:#463A24;
-  --danger:#E2856A;
-  --success:#74B39B;
-  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
-  --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 28px 64px -28px rgba(0,0,0,.8);
-  --panel:#0B0905;
+  --bg:#0A0812;
+  --bg-deep:#060410;
+  --surface:#120F20;
+  --surface-alt:#1A1730;
+  --surface-raised:#201C36;
+  --ink:#EEE9FF;
+  --ink-soft:#A9A3C4;
+  --ink-faint:#6B6585;
+  --accent:#8F87CB;
+  --accent-ink:#0A0714;
+  --accent-soft:#252050;
+  --accent-mid:#7B74AA;
+  --accent-glow:rgba(143,135,203,.26);
+  --accent2:#6DB87E;
+  --accent2-soft:#142B1B;
+  --accent2-glow:rgba(109,184,126,.20);
+  --highlight:#F8C662;
+  --highlight-deep:#F0A830;
+  --highlight-ink:#1E1A08;
+  --line:#231E3A;
+  --line-strong:#342E52;
+  --danger:#E06080;
+  --success:#6DB87E;
+  --shadow:0 2px 4px rgba(0,0,0,.4), 0 12px 32px -8px rgba(0,0,0,.6);
+  --shadow-md:0 4px 8px rgba(0,0,0,.5), 0 20px 48px -12px rgba(0,0,0,.7);
+  --shadow-lg:0 8px 16px rgba(0,0,0,.6), 0 40px 80px -20px rgba(0,0,0,.8);
+  --shadow-glow:0 0 0 1px var(--accent-glow), 0 8px 32px -4px var(--accent-glow);
+  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(143,135,203,.22) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(109,184,126,.14) 0%, transparent 55%),
+              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.10) 0%, transparent 50%);
+  --grad-mesh:radial-gradient(at 20% 50%, rgba(143,135,203,.12) 0px, transparent 50%),
+              radial-gradient(at 80% 20%, rgba(248,198,98,.07) 0px, transparent 50%),
+              radial-gradient(at 50% 90%, rgba(109,184,126,.08) 0px, transparent 50%);
+  --panel:#060410;
+  --panel-surface:#0E0B1E;
   color-scheme:dark;
 }
 
-/* ===== Medical re-tint: green leads, orange supports ===== */
+/* ── Medical re-tint: green leads ───────────────────────────────── */
 :root[data-view="medical"]:not([data-theme="dark"]){
-  --accent:#2E5C4E;
-  --accent-soft:#D3E2DA;
-  --accent-ink:#F2FAF6;
-  --accent-glow:rgba(46,92,78,.16);
-  --accent2:#B5602A;
-  --accent2-soft:#EFD6BC;
-  --accent2-glow:rgba(181,96,42,.16);
+  --accent:#41644A;
+  --accent-soft:#D8EAE0;
+  --accent-ink:#F0FAF4;
+  --accent-mid:#5C8E6A;
+  --accent-glow:rgba(65,100,74,.20);
+  --accent2:#595082;
+  --accent2-soft:#E8E5F4;
+  --accent2-glow:rgba(89,80,130,.16);
+  --grad-hero:radial-gradient(ellipse 100% 80% at 70% -10%, rgba(65,100,74,.18) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at -5% 80%, rgba(89,80,130,.12) 0%, transparent 55%),
+              radial-gradient(ellipse 40% 40% at 95% 95%, rgba(248,198,98,.10) 0%, transparent 50%);
 }
 :root[data-view="medical"][data-theme="dark"]{
-  --accent:#74B39B;
-  --accent-soft:#1D2E26;
-  --accent-ink:#0E1A15;
-  --accent-glow:rgba(116,179,155,.2);
-  --accent2:#E39352;
-  --accent2-soft:#4A3018;
-  --accent2-glow:rgba(227,147,82,.16);
+  --accent:#6DB87E;
+  --accent-soft:#142B1B;
+  --accent-ink:#071008;
+  --accent-mid:#5CA06C;
+  --accent-glow:rgba(109,184,126,.24);
+  --accent2:#8F87CB;
+  --accent2-soft:#252050;
+  --accent2-glow:rgba(143,135,203,.18);
 }
 
-/* Inside the always-dark band, use the dark-theme accents for contrast. */
+/* ── Always-dark band overrides ─────────────────────────────────── */
 .dark-panel{
-  --accent:#E39352;
-  --accent-ink:#241505;
-  --accent-soft:rgba(227,147,82,.16);
-  --accent-glow:rgba(227,147,82,.2);
-  --accent2:#74B39B;
-  --accent2-glow:rgba(116,179,155,.16);
+  --accent:#8F87CB;
+  --accent-ink:#0A0714;
+  --accent-soft:rgba(143,135,203,.16);
+  --accent-glow:rgba(143,135,203,.24);
+  --accent2:#6DB87E;
+  --accent2-glow:rgba(109,184,126,.20);
+  --highlight:#F8C662;
   --ink:var(--panel-ink);
   --ink-soft:var(--panel-ink-soft);
   --ink-faint:var(--panel-ink-faint);
   --line:var(--panel-line);
-  --line-strong:rgba(255,255,255,.18);
+  --line-strong:var(--panel-line-strong);
   --surface:var(--panel-card);
 }
 :root[data-view="medical"] .dark-panel{
-  --accent:#74B39B;
-  --accent-ink:#0E1A15;
-  --accent-soft:rgba(116,179,155,.16);
-  --accent-glow:rgba(116,179,155,.2);
-  --accent2:#E39352;
-  --accent2-glow:rgba(227,147,82,.16);
+  --accent:#6DB87E;
+  --accent-ink:#071008;
+  --accent-soft:rgba(109,184,126,.16);
+  --accent-glow:rgba(109,184,126,.24);
+  --accent2:#8F87CB;
+  --accent2-glow:rgba(143,135,203,.20);
 }

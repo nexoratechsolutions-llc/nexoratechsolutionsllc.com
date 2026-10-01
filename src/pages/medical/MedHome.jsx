@@ -10,6 +10,7 @@ import { friction, juniorStats, medStats, tracks, whyMedical } from '../../data/
 export default function MedHome() {
   return (
     <>
+      {/* ── Hero ── */}
       <section className="hero">
         <HeroBackdrop />
         <div className="wrap hero-grid">
@@ -21,9 +22,9 @@ export default function MedHome() {
               </WordReveal>
             </h1>
             <p className="hero-tag">
-              Coaching for USMLE Step 1, Step 2 CK and Step 3, U.S. clinical rotations and letters, mentored research
-              that leads to real publications, and hands-on Match support — sequenced as one roadmap instead of four
-              separate purchases.
+              Coaching for USMLE Steps 1, 2 CK and 3, U.S. clinical rotations and letters,
+              mentored research that leads to real publications, and hands-on Match support —
+              sequenced as one roadmap instead of four separate purchases.
             </p>
             <div className="actions">
               <Link className="btn btn-primary btn-lg" to="/medical/contact">
@@ -39,6 +40,7 @@ export default function MedHome() {
         </div>
       </section>
 
+      {/* ── Six friction points ── */}
       <section className="alt-band">
         <div className="wrap">
           <SectionHead
@@ -50,6 +52,7 @@ export default function MedHome() {
         </div>
       </section>
 
+      {/* ── Four tracks ── */}
       <section id="programs">
         <div className="wrap">
           <SectionHead
@@ -61,7 +64,7 @@ export default function MedHome() {
             {tracks.map((t) => (
               <Link className="card track-card" to={t.to} key={t.to}>
                 <span className="service-icon">
-                  <IconByName name={t.icon} size={21} />
+                  <IconByName name={t.icon} size={20} />
                 </span>
                 <span className="tag">{t.kicker}</span>
                 <h3>{t.title}</h3>
@@ -75,25 +78,20 @@ export default function MedHome() {
         </div>
       </section>
 
+      {/* ── Junior Scientist spotlight ── */}
       <section className="alt-band">
         <div className="wrap spot-hero">
           <SectionHead
             className="flush"
             eyebrow="Spotlight · Junior Scientist Program"
-            title={
-              <>
-                Real medical research for high schoolers — and a path to <em>earned</em> publication.
-              </>
-            }
+            title={<>Real medical research for high schoolers — and a path to <em>earned</em> publication.</>}
             lede="A physician-researcher mentors your child through one real study, every week, from reading their first paper to writing one of their own."
           />
           <Reveal effect="right" className="spot-side">
             <div className="spot-stats">
               {juniorStats.map((s) => (
                 <div key={s.value}>
-                  <b>
-                    <CountUp value={s.value} />
-                  </b>
+                  <b><CountUp value={s.value} /></b>
                   <span>{s.label}</span>
                 </div>
               ))}
@@ -105,6 +103,7 @@ export default function MedHome() {
         </div>
       </section>
 
+      {/* ── Why Nexora Medical ── */}
       <section>
         <div className="wrap">
           <SectionHead

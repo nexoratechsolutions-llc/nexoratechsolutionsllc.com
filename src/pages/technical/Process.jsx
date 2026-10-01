@@ -7,18 +7,29 @@ export default function Process() {
     <>
       <PageHero
         eyebrow="How we work"
-        title={
-          <>
-            An iterative delivery cycle, built for <em>adaptability</em>.
-          </>
-        }
+        title={<>An iterative delivery cycle, built for <em>adaptability</em>.</>}
         lede="Every engagement moves through five connected phases. Each one closes with a feedback loop back to the client, so the roadmap stays accurate as priorities evolve — not just at kickoff."
       />
 
+      {/* ── Five-phase stepper overview ── */}
       <section>
         <div className="wrap">
+          <SectionHead
+            eyebrow="At a glance"
+            title="Five phases, one continuous loop."
+            lede="Each phase has a named output and a client review before the next begins."
+          />
           <Stepper steps={deliverySteps} />
+        </div>
+      </section>
 
+      {/* ── Phase deep-dives ── */}
+      <section className="alt-band">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="Deep dive"
+            title="What happens inside each phase."
+          />
           {phases.map((ph) => (
             <Reveal effect="split" stagger className="process-block" key={ph.tag}>
               <div className="ph">
@@ -41,14 +52,15 @@ export default function Process() {
         </div>
       </section>
 
-      <section className="alt-band">
+      {/* ── Agile + DevOps ── */}
+      <section>
         <div className="wrap">
           <SectionHead
             eyebrow="Agile + DevOps synergy"
-            title="A high‑velocity environment, without sacrificing quality."
-            lede="We integrate Agile methodology with DevOps infrastructure so time‑to‑market drops without software quality following it down."
+            title="A high-velocity environment, without sacrificing quality."
+            lede="We integrate Agile methodology with DevOps infrastructure so time-to-market drops without software quality following it down."
           />
-          <Reveal className="impact-grid">
+          <Reveal effect="zoom" stagger className="impact-grid">
             {agileDevops.map((c) => (
               <div className="impact-cell" key={c.title}>
                 <h3>{c.title}</h3>

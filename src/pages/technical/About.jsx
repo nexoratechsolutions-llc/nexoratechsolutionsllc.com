@@ -9,14 +9,11 @@ export default function About() {
     <>
       <PageHero
         eyebrow="About Nexora"
-        title={
-          <>
-            One discipline underneath <em>everything</em> we build.
-          </>
-        }
-        lede="Nexora TechSolutions LLC has been at the forefront of IT innovation since 2026 — specializing in software development, AI‑driven solutions, and business process optimization for organizations that need technology to actually hold up under real operating conditions."
+        title={<>One discipline underneath <em>everything</em> we build.</>}
+        lede="Nexora TechSolutions LLC has been at the forefront of IT innovation since 2026 — specializing in software development, AI‑driven solutions, and business process optimization for organizations that need technology to hold up under real operating conditions."
       />
 
+      {/* ── Who we are ── */}
       <section>
         <div className="wrap">
           <SectionHead eyebrow="Who we are" title="Built on decades of enterprise delivery." />
@@ -32,15 +29,14 @@ export default function About() {
         </div>
       </section>
 
+      {/* ── By the numbers ── */}
       <section className="alt-band">
         <div className="wrap">
-          <SectionHead eyebrow="By the numbers" title="The shape of the practice." />
+          <SectionHead eyebrow="By the numbers" title="The shape of the practice." center />
           <Reveal effect="zoom" stagger className="big-stats">
             {techStats.map((s) => (
               <div className="big-stat" key={s.label}>
-                <b>
-                  <CountUp value={s.value} />
-                </b>
+                <b><CountUp value={s.value} /></b>
                 <span>{s.label}</span>
               </div>
             ))}
@@ -48,6 +44,7 @@ export default function About() {
         </div>
       </section>
 
+      {/* ── Why Nexora ── */}
       <section>
         <div className="wrap">
           <SectionHead eyebrow="Why Nexora" title="Reasons clients keep coming back." />

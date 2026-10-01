@@ -12,7 +12,7 @@
   <meta name="description" content="Two practices, one standard of delivery: software, AI, QA, DevOps and SAFe® training for businesses, plus USMLE coaching, research and Match support for IMGs." />
   <!--seo:end-->
   <!-- useTheme rewrites this when the theme changes. -->
-  <meta name="theme-color" content="#F7F4EC" />
+  <meta name="theme-color" content="#FAFAFA" />
   <meta name="author" content="Nexora TechSolutions LLC" />
   <meta name="format-detection" content="telephone=no" />
 
@@ -27,9 +27,9 @@
     paint. theme-boot.js flips it to "all" once it has loaded. Without this, a
     slow or blocked fonts.googleapis.com stops the whole page rendering.
   -->
-  <link id="gfonts" media="print" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link id="gfonts" media="print" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <!-- Pages are prerendered, so without JS the content is still there:
          drop the loader and the scroll-reveal hiding. -->
     <style>#boot-loader{display:none!important}.reveal,.reveal>*,.word{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}</style>
@@ -45,22 +45,23 @@
   -->
   <style>
     :root{
-      --boot-bg:#141109; --boot-ink:#F3EEE1; --boot-muted:#9C947F; --boot-faint:#7E7460;
-      --boot-accent:#E39352; --boot-green:#74B39B;
-      --boot-ring:rgba(255,255,255,.09); --boot-ring-2:rgba(255,255,255,.15);
-      --boot-track:rgba(255,255,255,.10);
-      --boot-wash:linear-gradient(135deg,#1C1710 0%,#15120A 38%,#173026 74%,#214736 100%);
+      /* Dark (default) */
+      --boot-bg:#0A0812; --boot-ink:#EEE9FF; --boot-muted:#6B6585; --boot-faint:#46415E;
+      --boot-accent:#8F87CB; --boot-green:#6DB87E;
+      --boot-ring:rgba(255,255,255,.07); --boot-ring-2:rgba(255,255,255,.12);
+      --boot-track:rgba(255,255,255,.08);
+      --boot-wash:linear-gradient(135deg,#120F20 0%,#0A0812 40%,#0E1A12 75%,#091510 100%);
     }
     :root[data-theme="light"]{
-      --boot-bg:#F7F4EC; --boot-ink:#1B1912; --boot-muted:#6B6558; --boot-faint:#948C79;
-      --boot-accent:#B5602A; --boot-green:#2E5C4E;
-      --boot-ring:rgba(27,25,18,.10); --boot-ring-2:rgba(27,25,18,.17);
-      --boot-track:rgba(27,25,18,.12);
-      --boot-wash:linear-gradient(135deg,#F9F6EF 0%,#F4F1E7 44%,#E7EFE9 80%,#D8E6DD 100%);
+      /* Light */
+      --boot-bg:#FAFAFA; --boot-ink:#0F0D1A; --boot-muted:#8B87A0; --boot-faint:#B0ACC0;
+      --boot-accent:#595082; --boot-green:#41644A;
+      --boot-ring:rgba(89,80,130,.08); --boot-ring-2:rgba(89,80,130,.14);
+      --boot-track:rgba(89,80,130,.10);
+      --boot-wash:linear-gradient(135deg,#FAFAFA 0%,#F0EDF8 44%,#EBF4EE 80%,#E0EEE4 100%);
     }
-    /* Medical pages lead with green, the same swap the site tokens make. */
-    :root[data-view="medical"]{ --boot-accent:#74B39B; --boot-green:#E39352; }
-    :root[data-view="medical"][data-theme="light"]{ --boot-accent:#2E5C4E; --boot-green:#B5602A; }
+    :root[data-view="medical"]{ --boot-accent:#6DB87E; --boot-green:#8F87CB; }
+    :root[data-view="medical"][data-theme="light"]{ --boot-accent:#41644A; --boot-green:#595082; }
     html{ background:var(--boot-bg); }
     body{ margin:0; background:var(--boot-bg); }
 
@@ -68,7 +69,7 @@
       position:fixed; inset:0; z-index:9999;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       background:var(--boot-bg); background-image:var(--boot-wash);
-      font-family:'Work Sans',-apple-system,'Segoe UI',sans-serif;
+      font-family:'Plus Jakarta Sans',-apple-system,'Segoe UI',sans-serif;
       /* Visible from the first painted frame. main.jsx holds it on screen for
          a minimum time before fading, so it is always actually seen and still
          never flashes. */

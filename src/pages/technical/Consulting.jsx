@@ -8,24 +8,26 @@ export default function Consulting() {
     <>
       <PageHero
         eyebrow="Consulting & Training"
-        title={
-          <>
-            Strategy, delivery leadership, and the <em>people</em> to run it.
-          </>
-        }
+        title={<>Strategy, delivery leadership, and the <em>people</em> to run it.</>}
         lede="Beyond engineering, Nexora builds organizational capability — in business analysis, program leadership, and the workforce to sustain it."
       />
 
+      {/* ── Three consulting pillars ── */}
       <section>
         <div className="wrap">
+          <SectionHead
+            eyebrow="Three pillars"
+            title="Delivery leadership to workforce capability."
+            lede="We don't just build systems — we build the organizational muscle to run them."
+          />
           <Reveal className="consult-grid">
             <div className="consult-col">
               <span className="tag">Delivery Leadership</span>
               <h2 className="h3">Business Analysis, Project &amp; Product Management</h2>
               <p>
-                Certified professionals guide business process optimization, stakeholder engagement and strategic
-                decision‑making — with deep expertise in product lifecycle management, requirement gathering, risk
-                assessment and market strategy.
+                Certified professionals guide business process optimization, stakeholder engagement and
+                strategic decision-making — with deep expertise in product lifecycle management,
+                requirement gathering, risk assessment and market strategy.
               </p>
               <p className="fine">Methodologies: Agile · SAFe · Scrum · Lean</p>
             </div>
@@ -33,9 +35,8 @@ export default function Consulting() {
               <span className="tag">Certified Training</span>
               <h2 className="h3">Elite Program &amp; Project Management Training</h2>
               <p>
-                Hands‑on training led by certified SAFe experts, bridging the gap between theory and practical
-                application — covering end‑to‑end project lifecycle, enterprise agility, strategic planning and risk
-                assessment.
+                Hands-on training led by certified SAFe experts, bridging theory and practical application —
+                covering end-to-end project lifecycle, enterprise agility, strategic planning and risk assessment.
               </p>
               <ul className="cert-list">
                 {certifications.map((c) => (
@@ -47,18 +48,19 @@ export default function Consulting() {
               <span className="tag">Workforce</span>
               <h2 className="h3">Training &amp; Staffing Solutions</h2>
               <p>
-                Specialized training programs across IT, AI, Business Analysis, HR and Project Management, paired with
-                end‑to‑end recruitment and workforce management.
+                Specialized training programs across IT, AI, Business Analysis, HR and Project Management,
+                paired with end-to-end recruitment and workforce management.
               </p>
               <p>
-                We upskill professionals with industry‑relevant expertise and help businesses build skilled teams for
-                long‑term success.
+                We upskill professionals with industry-relevant expertise and help businesses build skilled
+                teams for long-term success.
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
+      {/* ── Why Nexora ── */}
       <section className="alt-band">
         <div className="wrap">
           <SectionHead eyebrow="Why Nexora" title="Certified people, accountable delivery." />

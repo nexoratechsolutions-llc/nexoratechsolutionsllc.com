@@ -29,7 +29,7 @@
   root.classList.add('booting')
 
   var meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#141109' : '#F7F4EC')
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#130F1E' : '#F5F3F8')
 
   if (location.pathname.indexOf('/medical') === 0) root.setAttribute('data-view', 'medical')
 

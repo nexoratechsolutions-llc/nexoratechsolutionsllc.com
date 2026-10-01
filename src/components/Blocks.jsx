@@ -6,7 +6,7 @@ import { ArrowRight, Mail, Phone } from './Icons'
 import { SITE } from '../data/site'
 import { breadcrumbsFor, findRoute } from '../lib/seo'
 
-/** Decorative background for hero bands: drifting colour glows over a dot grid. */
+/** Decorative background glows + dot grid. */
 export function HeroBackdrop() {
   return (
     <>
@@ -16,7 +16,7 @@ export function HeroBackdrop() {
   )
 }
 
-/** Visible breadcrumb trail; mirrors the BreadcrumbList in the page's JSON-LD. */
+/** Breadcrumb trail. */
 export function Breadcrumbs() {
   const { pathname } = useLocation()
   const crumbs = breadcrumbsFor(findRoute(pathname))
@@ -38,7 +38,7 @@ export function Breadcrumbs() {
   )
 }
 
-/** The opening band of every inner page — the page's single <h1>. */
+/** Inner-page hero — full-bleed mesh gradient band. */
 export function PageHero({ eyebrow, title, lede, children }) {
   return (
     <section className="page-hero">
@@ -56,6 +56,7 @@ export function PageHero({ eyebrow, title, lede, children }) {
   )
 }
 
+/** Section heading with eyebrow + lede. */
 export function SectionHead({ eyebrow, title, lede, as: H = 'h2', center = false, className = '' }) {
   return (
     <Reveal effect="blur" className={`section-head${center ? ' center' : ''} ${className}`}>
@@ -66,6 +67,7 @@ export function SectionHead({ eyebrow, title, lede, as: H = 'h2', center = false
   )
 }
 
+/** Four stats in an enclosed row. */
 export function StatRow({ stats }) {
   return (
     <dl className="stat-row">
@@ -81,6 +83,7 @@ export function StatRow({ stats }) {
   )
 }
 
+/** Numbered connected stepper. */
 export function Stepper({ steps, detailed = false }) {
   return (
     <Reveal as="ol" stagger className={`stepper${detailed ? ' detailed' : ''}`}>
@@ -95,6 +98,7 @@ export function Stepper({ steps, detailed = false }) {
   )
 }
 
+/** Numbered grid (friction problems etc). */
 export function NumberedGrid({ items, cols = 3 }) {
   return (
     <Reveal className={`friction-grid cols-${cols}`}>
@@ -137,6 +141,7 @@ export function CompareGrid({ left, right }) {
   )
 }
 
+/** Program card with pill badges and optional link. */
 export function ProgCard({ p }) {
   return (
     <article className={`prog-card${p.flag ? ' flag' : ''}`}>
@@ -185,7 +190,7 @@ export function ChipRow({ items, label }) {
   )
 }
 
-/** A slow, endless horizontal ticker. The duplicate half is hidden from assistive tech. */
+/** Endless horizontal marquee ticker. */
 export function Marquee({ items, label }) {
   const row = (hidden) => (
     <ul className="marquee-list" aria-hidden={hidden || undefined}>
@@ -223,11 +228,11 @@ const CTA_COPY = {
   },
 }
 
+/** Full-bleed dark CTA band. */
 export function CtaBand({ practice = 'technical' }) {
   const c = CTA_COPY[practice]
   return (
     <section className="cta">
-      <HeroBackdrop />
       <div className="wrap">
         <Reveal effect="zoom" className="cta-box">
           <div className="cta-copy">
@@ -235,7 +240,7 @@ export function CtaBand({ practice = 'technical' }) {
             <p className="lede">{c.text}</p>
           </div>
           <div className="cta-actions">
-            <Link className="btn btn-primary btn-lg" to={c.to}>
+            <Link className="btn btn-highlight btn-lg" to={c.to}>
               {c.label} <ArrowRight size={18} className="arrow" />
             </Link>
             <div className="cta-direct">

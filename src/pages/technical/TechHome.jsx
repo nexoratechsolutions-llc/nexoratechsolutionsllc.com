@@ -10,6 +10,7 @@ import { aiStats, deliverySteps, services, stackChips, techStats, whyUs } from '
 export default function TechHome() {
   return (
     <>
+      {/* ── Hero ── */}
       <section className="hero">
         <HeroBackdrop />
         <div className="wrap hero-grid">
@@ -21,8 +22,9 @@ export default function TechHome() {
               </WordReveal>
             </h1>
             <p className="hero-tag">
-              We design, build and run software, AI and cloud systems that connect strategy to execution — end‑to‑end
-              delivery from discovery through scale, led by a team with decades of combined practice.
+              We design, build and run software, AI and cloud systems that connect strategy to
+              execution — end-to-end delivery from discovery through scale, led by a team with
+              decades of combined practice.
             </p>
             <div className="actions">
               <Link className="btn btn-primary btn-lg" to="/technical/contact">
@@ -38,8 +40,10 @@ export default function TechHome() {
         </div>
       </section>
 
+      {/* ── Tech marquee ── */}
       <Marquee items={stackChips} label="Technologies we work with" />
 
+      {/* ── Services ── */}
       <section>
         <div className="wrap">
           <SectionHead
@@ -48,11 +52,17 @@ export default function TechHome() {
             lede="From first architecture sketch to scaled production system, Nexora brings one accountable team across every discipline involved."
           />
           <Reveal effect="flip" stagger className="services-grid">
-            {services.map((s) => (
+            {services.map((s, i) => (
               <article className="card service-card" key={s.title}>
-                <span className="service-icon">
-                  <IconByName name={s.icon} size={21} />
-                </span>
+                {/* Numbered indicator */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+                  <span className="service-icon">
+                    <IconByName name={s.icon} size={20} />
+                  </span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.68rem', color: 'var(--ink-faint)', letterSpacing: '.08em' }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
                 <h3>{s.title}</h3>
                 <p>{s.text}</p>
               </article>
@@ -66,6 +76,7 @@ export default function TechHome() {
         </div>
       </section>
 
+      {/* ── Process ── */}
       <section className="alt-band">
         <div className="wrap">
           <SectionHead
@@ -82,13 +93,14 @@ export default function TechHome() {
         </div>
       </section>
 
+      {/* ── AI dark panel ── */}
       <section className="dark-panel">
         <HeroBackdrop />
         <div className="wrap">
           <SectionHead
             eyebrow="AI Solutions"
-            title="AI agents built to carry real operational weight."
-            lede="Built on AWS, Azure and Google Cloud with TensorFlow, PyTorch, OpenAI, Hugging Face and LangChain — and applied where they remove real friction."
+            title={<>AI agents built to carry real <em>operational</em> weight.</>}
+            lede="Built on AWS, Azure and Google Cloud with TensorFlow, PyTorch, OpenAI, Hugging Face and LangChain — applied where they remove real friction."
           />
           <Reveal effect="zoom" className="ai-stat-grid">
             {aiStats.map((s) => (
@@ -107,6 +119,7 @@ export default function TechHome() {
         </div>
       </section>
 
+      {/* ── Why Nexora ── */}
       <section>
         <div className="wrap">
           <SectionHead eyebrow="Why Nexora" title="Reasons clients keep coming back." />
