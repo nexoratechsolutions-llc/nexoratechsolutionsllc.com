@@ -109,7 +109,7 @@ main .page-loader{padding-top:var(--nav-h);}
 
 @media (max-width:1300px){
   .links{
-    position:fixed;top:var(--nav-h);right:0;bottom:0;z-index:60;
+    position:fixed;top:var(--drawer-top,var(--nav-h));right:0;bottom:0;z-index:60;
     width:min(88vw,380px);margin-left:0;
     flex-direction:column;align-items:stretch;gap:0;
     padding:20px 26px 32px;overflow-y:auto;
@@ -124,7 +124,7 @@ main .page-loader{padding-top:var(--nav-h);}
   .nav-link.active{color:var(--accent);}
   .nav-cta{margin-top:22px;padding:14px 22px;}
   .nav-backdrop{
-    display:block;position:fixed;inset:var(--nav-h) 0 0 0;z-index:55;
+    display:block;position:fixed;inset:var(--drawer-top,var(--nav-h)) 0 0 0;z-index:55;
     background:rgba(6,10,14,.65);opacity:0;pointer-events:none;
     backdrop-filter:blur(8px);
     transition:opacity .3s var(--ease-soft);

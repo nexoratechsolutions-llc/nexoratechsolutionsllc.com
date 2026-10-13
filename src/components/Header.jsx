@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
@@ -10,6 +10,8 @@ const DESKTOP_QUERY = '(min-width: 1301px)'
 export default function Header({ practice }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [drawerTop, setDrawerTop] = useState(null)
+  const headerRef = useRef(null)
   const { pathname } = useLocation()
   const p = practice ? PRACTICES[practice] : null
 
@@ -35,6 +37,18 @@ export default function Header({ practice }) {
     }
   }, [open])
 
+  // The drawer opens under the header's real bottom edge, which sits lower
+  // while the utility bar above it is still on screen.
+  const measureDrawerTop = () => {
+    const el = headerRef.current
+    if (el) setDrawerTop(Math.round(el.getBoundingClientRect().bottom))
+  }
+  useEffect(() => {
+    if (!open) return
+    window.addEventListener('resize', measureDrawerTop)
+    return () => window.removeEventListener('resize', measureDrawerTop)
+  }, [open])
+
   // Growing the window past the breakpoint dismisses the mobile drawer.
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_QUERY)
@@ -58,7 +72,13 @@ export default function Header({ practice }) {
   const cta = p ? { to: p.cta.to, label: p.cta.label } : { to: `/${HOME.cta.href}`, label: HOME.cta.label }
 
   return (
-    <header className="site-header" data-scrolled={scrolled} data-practice={practice || 'none'}>
+    <header
+      ref={headerRef}
+      className="site-header"
+      data-scrolled={scrolled}
+      data-practice={practice || 'none'}
+      style={drawerTop == null ? undefined : { '--drawer-top': `${drawerTop}px` }}
+    >
       <div className="wrap nav">
         <div className="nav-left">
           <Link className="brand" to="/" aria-label="Nexora TechSolutions — home">
@@ -90,7 +110,10 @@ export default function Header({ practice }) {
             aria-expanded={open}
             aria-controls="site-nav"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((o) => !o)}
+            onClick={() => {
+              measureDrawerTop()
+              setOpen((o) => !o)
+            }}
           >
             <i />
           </button>
