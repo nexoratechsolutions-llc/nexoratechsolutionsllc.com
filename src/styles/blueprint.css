@@ -380,7 +380,8 @@ main .page-loader{padding-top:0;}
 .logo.on-band .full.on-light{display:none;}
 .logo.on-band .full.on-dark{display:block;}
 @media (max-width:560px){
-  .logo.compact .full.on-light,.logo.compact .full.on-dark{display:none;}
+  .logo.compact .full.on-light,.logo.compact .full.on-dark,
+  :root[data-theme="dark"] .logo.compact .full.on-dark{display:none;}
   .logo.compact .mark.on-light{display:block;}
   :root[data-theme="dark"] .logo.compact .mark.on-light{display:none;}
   :root[data-theme="dark"] .logo.compact .mark.on-dark{display:block;}
@@ -392,3 +393,15 @@ main .page-loader{padding-top:0;}
 .nav-left{gap:clamp(12px,1.6vw,20px);}
 .links{gap:clamp(14px,1.4vw,22px);}
 .nav-link{white-space:nowrap;}
+
+/* Small phones: slim the service switch so it clears the theme/menu buttons. */
+@media (max-width:400px){
+  .nav{gap:8px;}
+  .nav-left{gap:8px;}
+  .practice-switch .n{display:none;}
+  .practice-switch a{padding:6px 10px;font-size:.74rem;}
+}
+@media (max-width:340px){
+  .practice-switch a{padding:6px 8px;}
+  .nav-right{gap:6px;}
+}
