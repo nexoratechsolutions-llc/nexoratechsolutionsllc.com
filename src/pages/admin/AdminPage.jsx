@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import AdminLogin from './AdminLogin'
 import AdminDashboard from './AdminDashboard'
-import BrandMark from '../../components/BrandMark'
+import Logo from '../../components/Logo'
 import '../../styles/admin.css'
 
 export default function AdminPage() {
@@ -58,7 +58,7 @@ export default function AdminPage() {
           gap: '16px',
         }}
       >
-        <BrandMark size={44} ring={true} />
+        <Logo mark height={44} alt="Nexora" />
         <div style={{ fontSize: '14px', color: 'var(--ink-soft)' }}>
           Verifying administrator credentials...
         </div>

@@ -1,90 +1,89 @@
 /* ===========================================================================
-   Nexora design tokens — Blueprint redesign (nexora-website (7).html)
-   Corporate IT-services look: light content bands, blue→teal "blueprint"
-   bands for heroes / AI / CTA / footer, royal blue for Technical, teal for
-   Medical, indigo on the landing page, amber as the shared highlight.
+   Nexora design tokens — Brand Redesign based on 3D Emerald Logo
+   Palette: Electric Cyber Emerald (#00F59B), Neon Mint (#00DC82),
+   Cyber Cyan (#00E5FF), Bio-Teal (#008B8B), Obsidian Carbon (#060A0E).
    =========================================================================== */
 :root{
-  /* ── Surfaces ── */
-  --bg:#F8FAFD;
-  --bg-deep:#EEF3FA;
+  /* ── Surfaces (Clean, high-tech light surfaces with subtle mint coolness) ── */
+  --bg:#F6FAF8;
+  --bg-deep:#EDF4F1;
   --surface:#FFFFFF;
-  --surface-alt:#E9EFF9;
+  --surface-alt:#EAF3EE;
   --surface-raised:#FFFFFF;
 
   /* ── Ink ── */
-  --ink:#101B2D;
-  --ink-soft:#46546A;
-  --ink-faint:#74829A;
+  --ink:#0A1410;
+  --ink-soft:#3D5248;
+  --ink-faint:#6B8277;
 
   /* ── Service colours ── */
-  --tech:#1D5FD1;  --tech-soft:#E2EBFC;
-  --med:#0B8F80;   --med-soft:#DAF3EF;
-  --warm:#E8962E;  --warm-soft:#FCEBD3;
+  --tech:#009F60;   --tech-soft:#E6F8EF;
+  --med:#008B8B;    --med-soft:#E0F6F3;
+  --warm:#009F60;   --warm-soft:#E6F8EF;
 
-  /* ── Accent: indigo on the landing page; re-tinted per service below ── */
-  --accent:#2F45B5;
+  /* ── Accent: Electric Cyber Emerald; re-tinted per service below ── */
+  --accent:#009F60;
   --accent-ink:#FFFFFF;
-  --accent-soft:#E4E8FA;
-  --accent-mid:#5A6CD0;
-  --accent-glow:rgba(47,69,181,.22);
-  --accent2:#0B8F80;
-  --accent2-soft:#DAF3EF;
-  --accent2-glow:rgba(11,143,128,.18);
+  --accent-soft:#E6F8EF;
+  --accent-mid:#00BF72;
+  --accent-glow:rgba(0,159,96,.24);
+  --accent2:#008B8B;
+  --accent2-soft:#E0F6F3;
+  --accent2-glow:rgba(0,139,139,.18);
   /* The page-level accent, readable inside bands that re-map --accent */
-  --view-accent:#2F45B5;
-  --view-accent2:#0B8F80;
+  --view-accent:#009F60;
+  --view-accent2:#008B8B;
 
-  /* ── Amber highlight ── */
-  --highlight:#E8962E;
-  --highlight-deep:#C9770F;
-  --highlight-ink:#1E1405;
+  /* ── Highlight / warm ── */
+  --highlight:#009F60;
+  --highlight-deep:#007A48;
+  --highlight-ink:#FFFFFF;
 
   /* ── Lines ── */
-  --line:#DCE4EF;
-  --line-strong:#C5D1E2;
+  --line:#DBE7E1;
+  --line-strong:#C2D6CC;
 
   /* Content colours that bands never re-map (for light cards sitting on a band) */
-  --c-ink:#101B2D;
-  --c-ink-soft:#46546A;
+  --c-ink:#0A1410;
+  --c-ink-soft:#3D5248;
   --c-surface:#FFFFFF;
-  --c-line:#DCE4EF;
+  --c-line:#DBE7E1;
 
   /* ── Semantic ── */
-  --danger:#C23A3A;
-  --success:#0B8F80;
+  --danger:#DC2626;
+  --success:#009F60;
 
   /* ── Shadows ── */
-  --shadow:0 1px 2px rgba(16,27,45,.05),0 16px 36px -18px rgba(29,60,120,.28);
-  --shadow-md:0 2px 4px rgba(16,27,45,.06),0 22px 48px -20px rgba(29,60,120,.32);
-  --shadow-lg:0 4px 10px rgba(16,27,45,.07),0 36px 72px -28px rgba(29,60,120,.38);
+  --shadow:0 1px 2px rgba(10,20,16,.04),0 16px 36px -18px rgba(0,159,96,.18);
+  --shadow-md:0 2px 4px rgba(10,20,16,.05),0 22px 48px -20px rgba(0,159,96,.22);
+  --shadow-lg:0 4px 10px rgba(10,20,16,.06),0 36px 72px -28px rgba(0,159,96,.28);
   --shadow-glow:0 0 0 1px var(--accent-glow),0 8px 32px -4px var(--accent-glow);
 
   /* ── Gradients ── */
-  --grad-accent:linear-gradient(135deg,var(--accent) 0%,color-mix(in srgb,var(--accent) 78%,var(--accent2)) 100%);
-  --grad-highlight:linear-gradient(135deg,#F2A93F 0%,#E0841C 100%);
+  --grad-accent:linear-gradient(135deg,var(--accent) 0%,#00DC82 50%,color-mix(in srgb,var(--accent) 70%,var(--accent2)) 100%);
+  --grad-highlight:linear-gradient(135deg,#00DC82 0%,#009F60 100%);
   --grad-hero:none;
   --grad-mesh:none;
 
-  /* ── Blueprint bands (heroes, AI section, footer) ── */
-  --band-1:#2447A8;
-  --band-2:#12808A;
+  /* ── Cyber Obsidian Bands (heroes, AI section, footer) ── */
+  --band-1:#060A0E;
+  --band-2:#0B131B;
   --band-ink:#FFFFFF;
-  --band-soft:#DCE6F7;
-  --band-faint:#B9C8E6;
-  --band-line:rgba(255,255,255,.14);
-  --band-line-strong:rgba(255,255,255,.30);
-  --band-card:rgba(255,255,255,.10);
-  --band-card-hover:rgba(255,255,255,.16);
-  --band-hi:#9FF0E2;
-  --band-amber:#FFD08A;
-  --band-ring:#1E4F9A;
-  --band-grid:rgba(255,255,255,.10);
+  --band-soft:#CADAD3;
+  --band-faint:#7D968B;
+  --band-line:rgba(0,245,155,.14);
+  --band-line-strong:rgba(0,245,155,.28);
+  --band-card:rgba(13,23,30,.72);
+  --band-card-hover:rgba(18,32,42,.88);
+  --band-hi:#00F59B;
+  --band-amber:#00E5FF;
+  --band-ring:#0C241B;
+  --band-grid:rgba(0,245,155,.08);
   --grad-band:
-    radial-gradient(45% 60% at 90% 8%,rgba(29,95,209,.35),transparent 70%),
-    radial-gradient(35% 45% at 60% 0%,rgba(232,150,46,.18),transparent 70%),
-    radial-gradient(50% 60% at 4% 100%,rgba(11,143,128,.30),transparent 70%),
-    linear-gradient(120deg,var(--band-1),var(--band-2));
+    radial-gradient(45% 60% at 85% 12%,rgba(0,245,155,.22),transparent 70%),
+    radial-gradient(38% 50% at 55% 0%,rgba(0,229,255,.16),transparent 70%),
+    radial-gradient(50% 65% at 5% 100%,rgba(16,185,129,.18),transparent 70%),
+    linear-gradient(135deg,var(--band-1) 0%,var(--band-2) 100%);
 
   /* Legacy panel names, mapped onto the band */
   --panel:var(--band-1);
@@ -117,87 +116,87 @@
   color-scheme:light;
 }
 
-/* ── Dark theme ── */
+/* ── Dark theme (Obsidian Cyber) ── */
 :root[data-theme="dark"]{
-  --bg:#0A0F1A;
-  --bg-deep:#070B14;
-  --surface:#111827;
-  --surface-alt:#172033;
-  --surface-raised:#111827;
-  --ink:#E9EEF6;
-  --ink-soft:#A5B1C4;
-  --ink-faint:#6E7B90;
-  --tech:#78A2F2;  --tech-soft:#172A4A;
-  --med:#44C9B7;   --med-soft:#10302D;
-  --warm:#F4B45E;  --warm-soft:#3A2A14;
-  --accent:#95A6F2;
-  --accent-ink:#0A0F1A;
-  --accent-soft:#1D2548;
-  --accent-mid:#7C8EE6;
-  --accent-glow:rgba(149,166,242,.24);
-  --accent2:#44C9B7;
-  --accent2-soft:#10302D;
-  --accent2-glow:rgba(68,201,183,.2);
-  --view-accent:#95A6F2;
-  --view-accent2:#44C9B7;
-  --highlight:#F4B45E;
-  --highlight-deep:#E89A35;
-  --highlight-ink:#1E1405;
-  --line:#243049;
-  --line-strong:#33415E;
-  --c-ink:#E9EEF6;
-  --c-ink-soft:#A5B1C4;
-  --c-surface:#111827;
-  --c-line:#243049;
-  --danger:#F07A7A;
-  --success:#44C9B7;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 34px -18px rgba(0,0,0,.7);
-  --shadow-md:0 2px 6px rgba(0,0,0,.45),0 22px 48px -20px rgba(0,0,0,.75);
-  --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 36px 72px -28px rgba(0,0,0,.8);
-  --band-1:#0D1526;
-  --band-2:#0A0F1A;
-  --band-ink:#E9EEF6;
-  --band-soft:#A5B1C4;
-  --band-faint:#6E7B90;
-  --band-line:rgba(233,238,246,.08);
-  --band-line-strong:rgba(233,238,246,.18);
-  --band-card:rgba(233,238,246,.05);
-  --band-card-hover:rgba(233,238,246,.09);
-  --band-hi:#7FE3D2;
-  --band-amber:#F4B45E;
-  --band-ring:#121C30;
-  --band-grid:rgba(233,238,246,.06);
+  --bg:#070B0F;
+  --bg-deep:#04070A;
+  --surface:#0D141C;
+  --surface-alt:#131C26;
+  --surface-raised:#101822;
+  --ink:#EDF6F2;
+  --ink-soft:#9EBAAE;
+  --ink-faint:#607A6E;
+  --tech:#00F59B;  --tech-soft:#0A261A;
+  --med:#00E5FF;   --med-soft:#08282D;
+  --warm:#00F59B;  --warm-soft:#0A261A;
+  --accent:#00F59B;
+  --accent-ink:#060A0E;
+  --accent-soft:#0A261A;
+  --accent-mid:#00DC82;
+  --accent-glow:rgba(0,245,155,.32);
+  --accent2:#00E5FF;
+  --accent2-soft:#08282D;
+  --accent2-glow:rgba(0,229,255,.25);
+  --view-accent:#00F59B;
+  --view-accent2:#00E5FF;
+  --highlight:#00F59B;
+  --highlight-deep:#00DC82;
+  --highlight-ink:#060A0E;
+  --line:#182721;
+  --line-strong:#233A31;
+  --c-ink:#EDF6F2;
+  --c-ink-soft:#9EBAAE;
+  --c-surface:#0D141C;
+  --c-line:#182721;
+  --danger:#F87171;
+  --success:#00F59B;
+  --shadow:0 1px 2px rgba(0,0,0,.6),0 16px 34px -18px rgba(0,0,0,.8);
+  --shadow-md:0 2px 6px rgba(0,0,0,.65),0 22px 48px -20px rgba(0,0,0,.85);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.7),0 36px 72px -28px rgba(0,0,0,.9);
+  --band-1:#060A0E;
+  --band-2:#0B131B;
+  --band-ink:#EDF6F2;
+  --band-soft:#9EBAAE;
+  --band-faint:#607A6E;
+  --band-line:rgba(0,245,155,.12);
+  --band-line-strong:rgba(0,245,155,.24);
+  --band-card:rgba(13,23,30,.72);
+  --band-card-hover:rgba(18,32,42,.88);
+  --band-hi:#00F59B;
+  --band-amber:#00E5FF;
+  --band-ring:#0C241B;
+  --band-grid:rgba(0,245,155,.07);
   --grad-band:
-    radial-gradient(45% 60% at 90% 8%,rgba(120,162,242,.16),transparent 70%),
-    radial-gradient(35% 45% at 60% 0%,rgba(244,180,94,.08),transparent 70%),
-    radial-gradient(50% 60% at 4% 100%,rgba(68,201,183,.12),transparent 70%),
+    radial-gradient(45% 60% at 85% 12%,rgba(0,245,155,.20),transparent 70%),
+    radial-gradient(38% 50% at 55% 0%,rgba(0,229,255,.14),transparent 70%),
+    radial-gradient(50% 65% at 5% 100%,rgba(16,185,129,.16),transparent 70%),
     linear-gradient(180deg,var(--band-1),var(--band-2));
   color-scheme:dark;
 }
 
-/* ── Service 1: Technical — royal blue leads ── */
+/* ── Service 1: Technical — electric emerald leads ── */
 :root[data-view="technical"]{
-  --accent:var(--tech);--accent-soft:var(--tech-soft);--accent-mid:#4A7EDB;--accent-glow:rgba(29,95,209,.22);
-  --accent2:var(--med);--accent2-soft:var(--med-soft);--accent2-glow:rgba(11,143,128,.18);
-  --view-accent:#1D5FD1;--view-accent2:#0B8F80;
+  --accent:var(--tech);--accent-soft:var(--tech-soft);--accent-mid:#00DC82;--accent-glow:rgba(0,159,96,.26);
+  --accent2:var(--med);--accent2-soft:var(--med-soft);--accent2-glow:rgba(0,139,139,.2);
+  --view-accent:#009F60;--view-accent2:#008B8B;
 }
 :root[data-view="technical"][data-theme="dark"]{
-  --accent-mid:#8FB3F5;--accent-glow:rgba(120,162,242,.24);--accent2-glow:rgba(68,201,183,.2);
-  --view-accent:#78A2F2;--view-accent2:#44C9B7;
+  --accent-mid:#00DC82;--accent-glow:rgba(0,245,155,.32);--accent2-glow:rgba(0,229,255,.25);
+  --view-accent:#00F59B;--view-accent2:#00E5FF;
 }
 
-/* ── Service 2: Medical — teal leads ── */
+/* ── Service 2: Medical — cyan / bio-teal leads ── */
 :root[data-view="medical"]{
-  --accent:var(--med);--accent-soft:var(--med-soft);--accent-mid:#2FA898;--accent-glow:rgba(11,143,128,.22);
-  --accent2:var(--tech);--accent2-soft:var(--tech-soft);--accent2-glow:rgba(29,95,209,.18);
-  --view-accent:#0B8F80;--view-accent2:#1D5FD1;
+  --accent:var(--med);--accent-soft:var(--med-soft);--accent-mid:#00B4A0;--accent-glow:rgba(0,139,139,.26);
+  --accent2:var(--tech);--accent2-soft:var(--tech-soft);--accent2-glow:rgba(0,159,96,.2);
+  --view-accent:#008B8B;--view-accent2:#009F60;
 }
 :root[data-view="medical"][data-theme="dark"]{
-  --accent-mid:#6BD6C7;--accent-glow:rgba(68,201,183,.24);--accent2-glow:rgba(120,162,242,.2);
-  --view-accent:#44C9B7;--view-accent2:#78A2F2;
+  --accent-mid:#33E7D3;--accent-glow:rgba(0,229,255,.32);--accent2-glow:rgba(0,245,155,.25);
+  --view-accent:#00E5FF;--view-accent2:#00F59B;
 }
 
-/* ── Inside blueprint bands: white ink, mint highlight, translucent cards ── */
+/* ── Inside cyber bands: white ink, glowing emerald, translucent cards ── */
 .hero,.page-hero,.land-hero,.dark-panel,.site-footer,.utility{
   --ink:var(--band-ink);
   --ink-soft:var(--band-soft);
@@ -208,13 +207,13 @@
   --surface-raised:var(--band-card);
   --surface-alt:var(--band-card);
   --accent:var(--band-hi);
-  --accent-ink:var(--band-1);
-  --accent-soft:rgba(159,240,226,.14);
+  --accent-ink:#060A0E;
+  --accent-soft:rgba(0,245,155,.16);
   --accent-mid:var(--band-hi);
-  --accent-glow:rgba(159,240,226,.22);
+  --accent-glow:rgba(0,245,155,.35);
   --accent2:var(--band-amber);
-  --accent2-soft:rgba(255,208,138,.14);
-  --accent2-glow:rgba(255,208,138,.2);
-  --grad-accent:linear-gradient(135deg,#FFFFFF,var(--band-hi));
+  --accent2-soft:rgba(0,229,255,.16);
+  --accent2-glow:rgba(0,229,255,.28);
+  --grad-accent:linear-gradient(135deg,#00F59B 0%,#00DC82 50%,#00E5FF 100%);
   color:var(--ink);
 }

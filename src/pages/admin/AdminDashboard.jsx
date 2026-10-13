@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
-import BrandMark from '../../components/BrandMark'
+import Logo from '../../components/Logo'
 import ThemeToggle from '../../components/ThemeToggle'
 import {
   ArrowLeft,
@@ -438,7 +438,7 @@ export default function AdminDashboard({ user, onSignOut }) {
       <header className="admin-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <Link to="/" className="admin-brand" title="Nexora Home">
-            <BrandMark size={32} ring={true} />
+            <Logo mark height={32} />
             <div className="admin-brand-text">
               <span className="admin-brand-title">Nexora Admin</span>
               <span className="admin-brand-sub">Submissions Center</span>

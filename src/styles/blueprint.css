@@ -15,24 +15,36 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;letter-spacing:-.015
 }
 .hero h1 em,.page-hero h1 em,.section-head h2 em,.cta-copy h2 em,.spot-hero h2 em{font-style:normal;color:var(--accent);}
 .eyebrow{font-size:.74rem;letter-spacing:.14em;}
-.eyebrow::before{background:var(--warm);width:22px;}
+.eyebrow::before{background:var(--accent);width:22px;}
 
-/* ── Buttons: flat pills, as in the reference ───────────────────────── */
-.btn{font-weight:600;font-size:.92rem;padding:12px 22px;}
+/* ── Buttons: modern pills with glowing cyber accents ──────────────── */
+.btn{font-weight:600;font-size:.92rem;padding:12px 22px;border-radius:999px;}
 .btn-lg{padding:14px 26px;font-size:.95rem;}
-.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 24px -14px var(--accent-glow);}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
-.btn-ghost{border-color:var(--line-strong);color:var(--ink);}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:transparent;transform:none;}
-/* On blueprint bands: white button, band-blue text; ghost in white outline */
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);
+  color:var(--accent-ink);
+  box-shadow:0 8px 20px -8px var(--accent-glow);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.btn-ghost{border-color:var(--line-strong);color:var(--ink);border-radius:999px;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 40%,transparent);transform:none;}
+/* On cyber bands: glowing electric emerald button with dark carbon text; ghost in cyber-glass outline */
 .hero .btn-primary,.page-hero .btn-primary,.land-hero .btn-primary,.dark-panel .btn-primary{
-  background:var(--band-ink);color:var(--band-1);box-shadow:none;
+  background:linear-gradient(135deg,#00F59B 0%,#00DC82 60%,#00E5FF 100%);
+  color:#060A0E;font-weight:700;
+  box-shadow:0 8px 24px -6px rgba(0,245,155,.45);
+}
+.hero .btn-primary:hover,.page-hero .btn-primary:hover,.land-hero .btn-primary:hover,.dark-panel .btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px -4px rgba(0,245,155,.65);
 }
 .hero .btn-ghost,.page-hero .btn-ghost,.land-hero .btn-ghost,.dark-panel .btn-ghost{
   color:var(--band-ink);border-color:var(--band-line-strong);
+  background:rgba(255,255,255,.05);backdrop-filter:blur(8px);
 }
 .hero .btn-ghost:hover,.page-hero .btn-ghost:hover,.land-hero .btn-ghost:hover,.dark-panel .btn-ghost:hover{
-  border-color:var(--band-ink);color:var(--band-ink);
+  border-color:var(--band-hi);color:var(--band-hi);
+  background:rgba(0,245,155,.1);
 }
 
 /* ── Utility bar ────────────────────────────────────────────────────── */
@@ -113,21 +125,21 @@ main .page-loader{padding-top:0;}
 .friction-cell{border:1px solid var(--line);border-radius:var(--radius-m);background:var(--surface);}
 .fnum{font-family:var(--font-display);font-weight:800;font-size:1.5rem;color:var(--accent);letter-spacing:0;line-height:1;}
 
-/* Agile + DevOps: amber top rule */
+/* Agile + DevOps: emerald top rule */
 .impact-grid{gap:18px;background:none;border:none;border-radius:0;overflow:visible;}
-.impact-cell{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--warm);border-radius:var(--radius-s);}
+.impact-cell{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:var(--radius-s);}
 
 /* Why Nexora: tinted icon tiles */
 .why-icon{
   filter:none;color:var(--accent);background:var(--accent-soft);border-radius:12px;
   width:48px;height:48px;padding:10px;box-sizing:border-box;
 }
-.why-card:nth-child(2) .why-icon{background:var(--warm-soft);color:var(--warm);}
+.why-card:nth-child(2) .why-icon{background:var(--accent2-soft);color:var(--accent2);}
 .why-card:nth-child(3) .why-icon{background:var(--med-soft);color:var(--med);}
 
-/* Junior Scientist "why it works": amber top rule */
+/* Junior Scientist "why it works": accent top rule */
 .feat-grid{border-top:none;column-gap:18px;row-gap:24px;}
-.feat{border-bottom:none;border-top:2px solid var(--warm);padding:20px 0 0;}
+.feat{border-bottom:none;border-top:2px solid var(--accent);padding:20px 0 0;}
 
 /* Flagship programme + price card in the service colour */
 .prog-card.flag{border-color:var(--accent);background:linear-gradient(160deg,var(--accent-soft),var(--surface) 60%);}
@@ -148,24 +160,51 @@ main .page-loader{padding-top:0;}
 .dark-panel .chip{background:var(--band-card);border-color:var(--band-line-strong);color:var(--band-soft);}
 .dark-panel .chip:hover{background:var(--band-card-hover);border-color:var(--band-ink);color:var(--band-ink);}
 
-/* ── Contact band: gradient in the service colour ───────────────────── */
+/* ── Contact band: cyber obsidian with electric aura ────────────────── */
 .cta{
   --cta-ink:#FFFFFF;
-  background:linear-gradient(120deg,var(--view-accent),color-mix(in srgb,var(--view-accent) 45%,var(--view-accent2)));
-  border:none;color:var(--cta-ink);
+  background:
+    radial-gradient(ellipse 70% 80% at 85% 20%, rgba(0,245,155,.24), transparent 70%),
+    radial-gradient(ellipse 60% 70% at 15% 90%, rgba(0,229,255,.18), transparent 70%),
+    linear-gradient(135deg, #060A0E 0%, #0B161B 50%, #061210 100%);
+  border-top:1px solid rgba(0,245,155,.25);
+  border-bottom:1px solid rgba(0,245,155,.15);
+  color:var(--cta-ink);
+  position:relative;
+  isolation:isolate;
 }
-:root[data-theme="dark"] .cta{--cta-ink:#0A0F1A;}
+:root[data-theme="dark"] .cta{--cta-ink:#FFFFFF;}
 .cta::before{display:none;}
 .cta-copy h2{color:var(--cta-ink);}
-.cta-copy h2 em{color:var(--cta-ink);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:6px;}
-.cta-copy .lede{color:var(--cta-ink);opacity:.9;}
+.cta-copy h2 em{
+  color:var(--band-hi);
+  font-style:normal;
+  text-decoration:none;
+}
+.cta-copy .lede{color:var(--band-soft);opacity:1;}
 .cta-copy .lede a{color:inherit;}
-.cta .btn-primary,.cta .btn-highlight{background:var(--cta-ink);color:var(--view-accent);box-shadow:none;}
-.cta .btn-primary:hover,.cta .btn-highlight:hover{transform:translateY(-1px);box-shadow:0 12px 26px -14px rgba(0,0,0,.4);}
-.cta .btn-ghost{border-color:color-mix(in srgb,var(--cta-ink) 55%,transparent);color:var(--cta-ink);}
-.cta .btn-ghost:hover{border-color:var(--cta-ink);color:var(--cta-ink);}
-.cta-direct a{color:var(--cta-ink);opacity:.9;}
-.cta-direct a:hover{color:var(--cta-ink);opacity:1;}
+.cta .btn-primary,.cta .btn-highlight{
+  background:linear-gradient(135deg,#00F59B 0%,#00DC82 60%,#00E5FF 100%);
+  color:#060A0E;font-weight:700;
+  box-shadow:0 8px 24px -6px rgba(0,245,155,.45);
+}
+.cta .btn-primary:hover,.cta .btn-highlight:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px -4px rgba(0,245,155,.65);
+}
+.cta .btn-ghost{
+  border-color:rgba(0,245,155,.35);
+  color:var(--cta-ink);
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(8px);
+}
+.cta .btn-ghost:hover{
+  border-color:var(--band-hi);
+  color:var(--band-hi);
+  background:rgba(0,245,155,.1);
+}
+.cta-direct a{color:var(--band-soft);opacity:1;}
+.cta-direct a:hover{color:var(--band-hi);opacity:1;}
 
 /* ── Footer (blueprint band) ────────────────────────────────────────── */
 .site-footer{background:var(--grad-band);border-top:1px solid var(--line);}
@@ -222,7 +261,7 @@ main .page-loader{padding-top:0;}
 .svc-num{
   grid-row:span 4;font-family:var(--font-display);font-weight:800;
   font-size:clamp(4rem,8vw,6.5rem);line-height:.8;letter-spacing:-.05em;
-  background:linear-gradient(160deg,var(--c),color-mix(in srgb,var(--c) 45%,var(--warm)));
+  background:linear-gradient(160deg,var(--c),#00E5FF);
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .svc-kicker{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--c);align-self:end;}
@@ -270,7 +309,7 @@ main .page-loader{padding-top:0;}
 }
 .num:nth-child(-n+3) b{color:var(--tech);}
 .num:nth-child(n+4) b{color:var(--med);}
-.num b small{font-size:.5em;color:var(--warm);font-weight:600;margin-left:2px;}
+.num b small{font-size:.5em;color:var(--accent);font-weight:600;margin-left:2px;}
 .num > span:last-child{font-size:.8rem;color:var(--ink-soft);line-height:1.35;}
 .num .tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;}
 .num .tag.tech{color:var(--tech);}
@@ -285,7 +324,7 @@ main .page-loader{padding-top:0;}
   white-space:nowrap;display:inline-flex;align-items:center;gap:40px;
 }
 .ticker-list li.m{color:var(--med);}
-.ticker-list li::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--warm);}
+.ticker-list li::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);}
 @media (prefers-reduced-motion:no-preference){
   .ticker-track{animation:marquee 55s linear infinite;}
   .ticker:hover .ticker-track{animation-play-state:paused;}
@@ -331,3 +370,25 @@ main .page-loader{padding-top:0;}
 
 /* Highlighted words in AI-section headings use the band mint, like the hero */
 .dark-panel .section-head h2 em{color:var(--band-hi);}
+
+/* ── Logo (Logo.jsx): show the one file that fits theme, background and width ── */
+.logo{display:inline-flex;align-items:center;line-height:0;flex-shrink:0;}
+.logo img{display:none;height:var(--logo-h,40px);width:auto;}
+.logo .full.on-light,.logo.mark-only .mark.on-light{display:block;}
+:root[data-theme="dark"] .logo .full.on-light,:root[data-theme="dark"] .logo.mark-only .mark.on-light{display:none;}
+:root[data-theme="dark"] .logo .full.on-dark,:root[data-theme="dark"] .logo.mark-only .mark.on-dark{display:block;}
+.logo.on-band .full.on-light{display:none;}
+.logo.on-band .full.on-dark{display:block;}
+@media (max-width:560px){
+  .logo.compact .full.on-light,.logo.compact .full.on-dark{display:none;}
+  .logo.compact .mark.on-light{display:block;}
+  :root[data-theme="dark"] .logo.compact .mark.on-light{display:none;}
+  :root[data-theme="dark"] .logo.compact .mark.on-dark{display:block;}
+}
+
+/* Header: the wordmark is wider than the old mark — give the bar more room
+   on large screens and keep every menu label on one line. */
+.site-header .wrap,.utility .wrap{max-width:1360px;}
+.nav-left{gap:clamp(12px,1.6vw,20px);}
+.links{gap:clamp(14px,1.4vw,22px);}
+.nav-link{white-space:nowrap;}

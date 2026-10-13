@@ -6,7 +6,10 @@
 }
 .page-loader-badge{width:132px;height:132px;display:block;}
 .pl-ring{transform-origin:60px 60px;}
-.pl-node{transform-box:fill-box;transform-origin:center;}
+.pl-mark{transform-box:fill-box;transform-origin:center;}
+.pl-mark.on-dark{display:none;}
+:root[data-theme="dark"] .pl-mark.on-light{display:none;}
+:root[data-theme="dark"] .pl-mark.on-dark{display:inline;}
 
 .page-loader-name{
   margin-top:26px;
@@ -35,14 +38,12 @@
   .page-loader{opacity:0;animation:plIn .3s ease .2s forwards;}
   .pl-ring{animation:spin360 9s linear infinite;}
   .pl-ring.rev{animation-duration:13s;animation-direction:reverse;}
-  .pl-node{animation:plPulse 2.1s ease-in-out infinite;}
-  .pl-node.b{animation-delay:.3s;}
-  .pl-node.c{animation-delay:.6s;}
+  .pl-mark{animation:plMark 2.1s ease-in-out infinite;}
   .page-loader-track::after{animation:plSlide 1.5s cubic-bezier(.65,0,.35,1) infinite;}
 }
 @media (prefers-reduced-motion: reduce){
   .page-loader-track::after{width:100%;box-shadow:none;}
 }
 @keyframes plIn{to{opacity:1;}}
-@keyframes plPulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:1;transform:scale(1.18);}}
+@keyframes plMark{0%,100%{opacity:.85;transform:scale(1);}50%{opacity:1;transform:scale(1.07);}}
 @keyframes plSlide{0%{transform:translateX(-110%);}100%{transform:translateX(400%);}}

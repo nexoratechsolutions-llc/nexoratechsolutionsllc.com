@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 
 const STORAGE_KEY = 'nexora-theme'
-const THEME_COLORS = { dark: '#0A0F1A', light: '#F8FAFD' }
+const THEME_COLORS = { dark: '#070B0F', light: '#F6FAF8' }
 
 function readStored() {
   try {

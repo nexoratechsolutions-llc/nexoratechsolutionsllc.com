@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import BrandMark from './BrandMark'
+import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import { ArrowRight } from './Icons'
 import { HOME, PRACTICES } from '../data/site'
 
-const DESKTOP_QUERY = '(min-width: 1181px)'
+const DESKTOP_QUERY = '(min-width: 1301px)'
 
 export default function Header({ practice }) {
   const [open, setOpen] = useState(false)
@@ -62,10 +62,7 @@ export default function Header({ practice }) {
       <div className="wrap nav">
         <div className="nav-left">
           <Link className="brand" to="/" aria-label="Nexora TechSolutions — home">
-            <BrandMark size={30} className="brand-mark" />
-            <span className="brand-word">
-              Nex<b>ora</b>
-            </span>
+            <Logo height={34} compact />
           </Link>
           <nav className="practice-switch" aria-label="Nexora services">
             <NavLink to="/technical">

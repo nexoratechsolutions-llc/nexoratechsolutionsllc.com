@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
-import BrandMark from '../../components/BrandMark'
+import Logo from '../../components/Logo'
 import ThemeToggle from '../../components/ThemeToggle'
 import Turnstile, { TURNSTILE_SITE_KEY } from '../../components/Turnstile'
 import { ArrowLeft, Shield } from '../../components/Icons'
@@ -97,7 +97,7 @@ export default function AdminLogin({ onLoginSuccess }) {
         {/* Polished, centered brand header */}
         <div className="admin-login-header">
           <div className="admin-login-logo-wrap" title="Nexora Operations">
-            <BrandMark size={34} ring={false} />
+            <Logo mark height={34} alt="Nexora" />
           </div>
           <div className="admin-login-badge">
             <span className="admin-login-badge-dot" />

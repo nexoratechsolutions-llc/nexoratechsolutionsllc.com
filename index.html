@@ -12,11 +12,11 @@
   <meta name="description" content="One company, two services: software, AI, QA, DevOps and SAFe® training for businesses, plus USMLE coaching, research and residency Match support for IMGs." />
   <!--seo:end-->
   <!-- useTheme rewrites this when the theme changes. -->
-  <meta name="theme-color" content="#F8FAFD" />
+  <meta name="theme-color" content="#F6FAF8" />
   <meta name="author" content="Nexora TechSolutions LLC" />
   <meta name="format-detection" content="telephone=no" />
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
@@ -45,26 +45,26 @@
   -->
   <style>
     :root{
-      /* Dark */
-      --boot-bg:#0A0F1A; --boot-ink:#E9EEF6; --boot-muted:#A5B1C4; --boot-faint:#6E7B90;
-      --boot-accent:#95A6F2; --boot-green:#44C9B7;
-      --boot-ring:rgba(233,238,246,.08); --boot-ring-2:rgba(233,238,246,.14);
-      --boot-track:rgba(233,238,246,.10);
-      --boot-wash:linear-gradient(135deg,#0D1526 0%,#0A0F1A 45%,#0B1A20 80%,#0A1F22 100%);
+      /* Dark (Obsidian Cyber) */
+      --boot-bg:#070B0F; --boot-ink:#EDF6F2; --boot-muted:#9EBAAE; --boot-faint:#607A6E;
+      --boot-accent:#00F59B; --boot-green:#00E5FF;
+      --boot-ring:rgba(0,245,155,.12); --boot-ring-2:rgba(0,245,155,.20);
+      --boot-track:rgba(0,245,155,.14);
+      --boot-wash:radial-gradient(ellipse 80% 60% at 50% 20%, rgba(0,245,155,.12), transparent 70%), linear-gradient(135deg,#070B0F 0%,#0B131B 50%,#071015 100%);
     }
     :root[data-theme="light"]{
-      /* Light */
-      --boot-bg:#F8FAFD; --boot-ink:#101B2D; --boot-muted:#46546A; --boot-faint:#74829A;
-      --boot-accent:#2F45B5; --boot-green:#0B8F80;
-      --boot-ring:rgba(29,60,120,.10); --boot-ring-2:rgba(29,60,120,.16);
-      --boot-track:rgba(29,60,120,.12);
-      --boot-wash:linear-gradient(135deg,#F8FAFD 0%,#EEF3FA 44%,#E4F3F1 80%,#DAEFEC 100%);
+      /* Light (Tech Mint) */
+      --boot-bg:#F6FAF8; --boot-ink:#0A1410; --boot-muted:#3D5248; --boot-faint:#6B8277;
+      --boot-accent:#009F60; --boot-green:#008B8B;
+      --boot-ring:rgba(0,159,96,.12); --boot-ring-2:rgba(0,159,96,.20);
+      --boot-track:rgba(0,159,96,.14);
+      --boot-wash:radial-gradient(ellipse 80% 60% at 50% 20%, rgba(0,245,155,.08), transparent 70%), linear-gradient(135deg,#F6FAF8 0%,#EDF4F1 50%,#E4F2EC 100%);
     }
-    /* Technical leads with royal blue, Medical with teal — as the site tokens do. */
-    :root[data-view="technical"]{ --boot-accent:#78A2F2; --boot-green:#44C9B7; }
-    :root[data-view="technical"][data-theme="light"]{ --boot-accent:#1D5FD1; --boot-green:#0B8F80; }
-    :root[data-view="medical"]{ --boot-accent:#44C9B7; --boot-green:#78A2F2; }
-    :root[data-view="medical"][data-theme="light"]{ --boot-accent:#0B8F80; --boot-green:#1D5FD1; }
+    /* Technical leads with electric emerald, Medical with cyan / bio-teal — as the site tokens do. */
+    :root[data-view="technical"]{ --boot-accent:#00F59B; --boot-green:#00E5FF; }
+    :root[data-view="technical"][data-theme="light"]{ --boot-accent:#009F60; --boot-green:#008B8B; }
+    :root[data-view="medical"]{ --boot-accent:#00E5FF; --boot-green:#00F59B; }
+    :root[data-view="medical"][data-theme="light"]{ --boot-accent:#008B8B; --boot-green:#009F60; }
     html{ background:var(--boot-bg); }
     body{ margin:0; background:var(--boot-bg); }
 
@@ -89,11 +89,12 @@
     .boot-badge{ width:168px; height:168px; display:block; }
     .boot-ring-spin{ transform-origin:60px 60px; animation:bootSpin 9s linear infinite; }
     .boot-ring-spin.rev{ animation-duration:13s; animation-direction:reverse; }
-    .boot-node{ transform-box:fill-box; transform-origin:center; animation:bootPulse 2.1s ease-in-out infinite; }
-    .boot-node.b{ animation-delay:.3s; }
-    .boot-node.c{ animation-delay:.6s; }
+    .boot-mark{ transform-box:fill-box; transform-origin:center; animation:bootMark 2.1s ease-in-out infinite; }
+    .boot-mark-light{ display:none; }
+    :root[data-theme="light"] .boot-mark-light{ display:inline; }
+    :root[data-theme="light"] .boot-mark-dark{ display:none; }
     @keyframes bootSpin{ to{ transform:rotate(360deg); } }
-    @keyframes bootPulse{ 0%,100%{ opacity:.5; transform:scale(1); } 50%{ opacity:1; transform:scale(1.18); } }
+    @keyframes bootMark{ 0%,100%{ transform:scale(1); opacity:.85; } 50%{ transform:scale(1.07); opacity:1; } }
 
     .boot-name{
       margin-top:34px;
@@ -135,7 +136,7 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      .boot-ring-spin,.boot-node,.boot-track::after{ animation:none; }
+      .boot-ring-spin,.boot-mark,.boot-track::after{ animation:none; }
       .boot-track::after{ width:100%; box-shadow:none; }
       .boot-slow{ animation:none; opacity:1; }
     }
@@ -160,15 +161,9 @@
                 stroke-linecap="round" stroke-dasharray="16 254" opacity=".7" />
       </g>
 
-      <!-- Brand mark, scaled from its native 30x30 box into the centre. -->
-      <g transform="translate(30 32) scale(2)">
-        <line x1="9" y1="20" x2="15" y2="8" stroke="var(--boot-accent)" stroke-width="1" />
-        <line x1="15" y1="8" x2="21" y2="20" stroke="var(--boot-green)" stroke-width="1" />
-        <line x1="9" y1="20" x2="21" y2="20" stroke="var(--boot-faint)" stroke-width="1" />
-        <circle class="boot-node a" cx="15" cy="8" r="3" fill="var(--boot-accent)" />
-        <circle class="boot-node b" cx="9" cy="20" r="3" fill="var(--boot-green)" />
-        <circle class="boot-node c" cx="21" cy="20" r="3" fill="var(--boot-ink)" />
-      </g>
+      <!-- Nexora "N" mark: colour on light, white on dark (public/logo-mark*.png). -->
+      <image class="boot-mark boot-mark-light" href="/logo-mark.png" x="36" y="36.75" width="48" height="46.5" />
+      <image class="boot-mark boot-mark-dark" href="/logo-mark-dark.png" x="36" y="36.75" width="48" height="46.5" />
     </svg>
 
     <div class="boot-name" aria-hidden="true">Nexora Tech Solutions LLC</div>

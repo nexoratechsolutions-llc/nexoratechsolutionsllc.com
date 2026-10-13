@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import BrandMark from './BrandMark'
+import Logo from './Logo'
 import SocialLinks from './SocialLinks'
 import { Mail, MapPin, Phone } from './Icons'
 import { PRACTICES, SITE } from '../data/site'
@@ -23,11 +23,8 @@ export default function Footer({ practice }) {
       <div className="wrap">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link className="brand" to="/">
-              <BrandMark size={28} ring={false} />
-              <span className="brand-word">
-                Nex<b>ora</b> TechSolutions
-              </span>
+            <Link className="brand" to="/" aria-label="Nexora TechSolutions — home">
+              <Logo height={46} onBand />
             </Link>
             <p>{SITE.legalName} · Technology services and medical education, since {SITE.founded}.</p>
             <div className="footer-contact">
